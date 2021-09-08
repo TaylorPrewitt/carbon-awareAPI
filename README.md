@@ -16,6 +16,7 @@
 | **Carbon delta**   | The difference in emissions between carbon aware and unaware actions. | 
 | **Carbon counterfactual**   | The *carbon delta* had the carbon aware action been different.| 
 
+Other definitions for the Carbon Awareness found at: <br>
 <a href = "https://github.com/Green-Software-Foundation/Dictionary/blob/dev/Dictionary/Dictionary.md">Green Software Foundation Dictionary</a>
 
 
