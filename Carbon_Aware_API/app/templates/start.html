@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<title>Azure GreenAI Carbon-Intensity API Home</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Segoe UI";
+}
+
+/* Main page image */
+.main_image {
+  max-width: 100%;
+}
+
+/* Overlapping words */
+.splashPage {
+  text-align: center;
+  color: white;
+}
+
+/* Centered text */
+.image-desc{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 0;
+  padding-bottom: 200px;
+}
+
+/* Main content */
+.main_content {
+  margin-left: 200px;
+  margin-right: 200px;
+}
+
+/* Navbar */
+nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #1a1a1f;
+    padding: .75rem;
+    padding-bottom: 10px;
+    z-index: 6;
+}
+
+a {
+  color: #007fff;
+  text-decoration: none;
+}
+
+.navLink {
+    color: white;
+    text-decoration: none;
+    padding: .8rem;
+    vertical-align: middle;
+    margin-bottom: 1rem;
+}
+
+a:hover {
+  color: gray;
+}
+
+ul {
+    margin: 0;
+    padding: 0;
+    padding-top: .5rem;
+    display: inline-block;
+}
+
+li {
+  margin-bottom: 1rem;
+  margin-left: 1rem;
+}
+
+.logo {
+  padding-left: 1em;
+  padding-right: 1em;
+  height: 40px;
+  vertical-align: middle;
+  margin-bottom: 18px;
+}
+
+.logo:hover {
+  transform: scale(1.07);
+}
+
+ul.horizontal-list {
+  min-width: 696px;
+  list-style: none;
+}
+ul.horizontal-list li {
+  display: inline;
+  padding-bottom: 0.8rem;
+}
+
+/* End of Navbar */
+</style>
+<body>
+  <div>
+    <nav>
+      <ul class="horizontal-list">
+        <li class="navLink"><a class="navLink" href=https://azure.microsoft.com/en-us><img class="logo" src="https://upload.wikimedia.org/wikipedia/commons/a/a8/Microsoft_Azure_Logo.svg"></img></a></li>
+        <li><a class="navLink" href=/. >Home</a></li>
+        <li><a class="navLink" href=/protected >Calculate Resource Emissions</a></li>
+        <li><a class="navLink" href=/pred_shift_find >Time/Region Shifting</a></li>
+        <li><a class="navLink" href=/ci_data >Get Carbon Intensity Data</a></li>
+        <li><a class="navLink" href=/all_index>Explore Global Carbon Intensity</a></li>
+        <li><a class="navLink" href=/docs_page>Documentation</a></li>
+      </ul>
+    </nav>
+  </div>
+
+<div class="content">
+    <div class="splashPage">
+      <img  class="main_image" src="https://i.ibb.co/SyCq7j3/mountain.png" alt="Mountain Image">
+      <div class="image-desc">
+        <h1>Microsoft Azure GreenAI Carbon-Intensity API</h1>
+
+      </div> 
+    </div>
+
+    <br><br>
+    <div class="main_content">
+        <p>
+        <img src="https://1gew6o3qn6vx9kp3s42ge0y1-wpengine.netdna-ssl.com/wp-content/uploads/prod/prod/prod/2020/01/MS-Event-2020-01-Carbon_T8A7561-small.jpg" width="648" height="432"  style='float: right; padding: 15px;' ></img>
+        <h3 style='color: #5d6b74;'>A Green Solution for Energy Intensive Workloads</h3>
+        <p>
+          The scientific consensus is clear. The world confronts an urgent
+          carbon problem. The carbon in our atmosphere has created a
+          blanket of gas that traps heat and is changing the world’s climate.
+          Already, the planet’s temperature has risen by 1 degree Celsius.
+          If we don’t curb emissions and temperatures continue to climb,
+          science tells us that the results will be catastrophic.
+          <br>
+          <a href="https://aka.ms/MSFTcarbonfactsheet">Read more from Brad Smith's blog</a>
+        </p>
+        <p>
+          Microsoft has been carbon neutral across the world since 2012 and commits to being carbon negative by 2030. 
+          Our goal is to promote sustainable development and low-carbon business practices globally through our sustainable 
+          business practices and cloud-enabled technologies.
+        </p>
+
+        <p>
+          Up until 20 years ago, a single utility would own all the power 
+          plants and transmission lines to supply electricity for a specific region. 
+          It would be responsible to dial-up or down its supply according to the 
+          demand. However, in today’s competitive business landscape, we have 
+          an energy wholesale market to meet the demands. The market does 
+          short-term demand forecast day-ahead and allows power suppliers to 
+          come online and place bids. The market brings in plants online in 
+          order of price. The market generally brings in the lowest-emission plants first. Then every five minutes 
+          throughout the day, the market would decide which plant to run to match the supply.
+        </p>
+        
+        <p>
+          Azure (AZ) customers have requested their Azure Carbon emissions footprint be available, 
+          and in response Microsoft released the Azure Sustainability Calculator. This uses yearly average 
+          emissions data to enable customers to make more informed decisions about their environmental impact. 
+          There is an opportunity to make emissions efficiency a key competitive advantage, as well as significantly 
+          reducing Azure emissions, through targeted software development.
+        </p>
+                
+        <p>
+          The Carbon API exists as a wrapper on top of the WattTime API. This API will take the different
+          WattTime endpoints (Grid, Real-Time, Historical, Forecasted) for Carbon Intensity (CI) data and associate them to
+          AZ regions. This includes developing a dashboard to map CI data for AZ regions and provide multiple
+          visualizations of the CI data with respect to AZ regions.
+        </p>
+<br>
+        <ul class="horizontal-list">
+          <li><b style='color: #5d6b74;'>Quick Video Links: </b></li>
+          <li><a href="#LoadShift">Load Shifting</a></li>
+          <li><a href="#ExploreCI"> Explore Global Carbon Intensity</a></li>
+          <li><a href="#AMLemission"> AML Emissions Evaluations</a></li>
+          <li><a href="#CIdata"> Query Raw Carbon Intensity Data</a></li>
+        </ul>
+
+    </div>
+    
+</div>
+<br><br><br>
+<center>
+  <h2 id="LoadShift"><br><br><br><br><br>Load Shifting</h2>
+  <iframe width="1200" height="700" src="https://www.youtube.com/embed/xIqvIV7y_Bo" title="Load Shifting" frameborder="0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+  <br><br><br><br><br>
+  <h2 id="ExploreCI"><br><br><br><br><br>Explore Global Carbon Intensity</h2>
+  <iframe width="1200" height="700" src="https://www.youtube.com/embed/VajRYvA-35Y" title="Explore Global Carbon Intensity" frameborder="0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+  <br><br><br><br><br>
+  <h2 id="AMLemission"><br><br><br><br><br>AML Emissions Evaluation</h2>
+  <iframe width="1200" height="700" src="https://www.youtube.com/embed/TZ2dgDymqCE" title="AML Emissions Evaluation" frameborder="0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+  <br><br><br><br><br>
+  <h2 id="CIdata"><br><br><br><br><br>Query Raw Carbon Intensity Data</h2>
+  <iframe width="1200" height="700" src="https://www.youtube.com/embed/1A_DOyM0oBc" title="AML Emissions Evaluation" frameborder="0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+
+
+</center>
+
+<br><br><br>
+</body>
+</html>

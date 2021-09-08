@@ -1,0 +1,9 @@
+[{"usage":0 , "payload":{
+        "current_region" : "regionName",
+        "current_region_avg" : "current_region_avg",
+        "current_starttime" : "current_time",
+        "greenest_region" : "minimum_region", "greenest_starttime" : "greenest_starttime",
+        "greenest_region_BA" : "ba",
+        "minimum_avg_moer" : "minimum_avg_moer", "percentage_decrease" : 0 , 
+        "window_size_in_minutes": 60
+    }}]

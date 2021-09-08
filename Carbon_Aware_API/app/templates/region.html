@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Azure GreenAI Carbon-Intensity API</title>
+
+<!-- link in Bootstrap here -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" 
+integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Segoe UI";
+}
+
+h1 {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.main_content {
+  margin-top: 80px;
+  margin-left: 150px;
+  margin-right: 150px;
+}
+
+.boxed {
+    border: 2px solid #1a1a1f;
+    position: relative;
+    /* background: #B3DCF3; */
+    border-radius: 15px;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.graph1 {
+    margin-left: 20px;
+    margin-right: 20px;
+    height: 600px;
+    width: 800px;
+    justify-content: center;
+}
+
+.graph2 {
+    margin-left: 20px;
+    margin-right: 20px;
+    justify-content: center;
+}
+
+
+img.image {
+    height: 400px;
+    width: 100%;
+}
+
+.row {
+    justify-content: center;
+}
+
+.card-title {
+    font-size: 17px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.number {
+    font-size: 36px;
+    text-align: center;
+    /* font-weight: 550; */
+}
+
+.text-center {
+    padding: 15px;
+}
+
+.content {
+  margin-top: 150px;
+  text-align: center;
+}
+
+.heading {
+  margin-bottom: 60px;
+}
+
+.card {
+    justify-content: center;
+    border: 4px solid  #1a1a1f;
+    border-radius: 20px;
+}
+
+.card_graph {
+    justify-content: center;
+    border: 4px solid  white;
+    border-radius: 20px;
+
+}
+
+.title-background {
+    background-color: #007fff;
+    padding: 0.5px;
+}
+
+.black-text {
+    color: #1a1a1f;
+    font-size: 24px;
+}
+
+.watt_img {
+  height: 40px;
+  vertical-align: middle;
+  margin-bottom: 18px;
+}
+
+.watt_img:hover {
+    border-radius: 10px;
+    background-color: #F5F5F5;
+}
+
+/* Navbar */
+nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #1a1a1f;
+    padding: .75rem;
+    padding-bottom: 10px;
+    z-index: 6;
+}
+
+a {
+  color: #007fff;
+  text-decoration: none;
+}
+
+.navLink {
+    color: white;
+    text-decoration: none;
+    padding: .8rem;
+    vertical-align: middle;
+    margin-bottom: 1rem;
+}
+
+a:hover {
+  color: gray;
+}
+
+ul {
+    margin: 0;
+    padding: 0;
+    padding-top: .5rem;
+    display: inline-block;
+}
+
+li {
+  margin-bottom: 1rem;
+  margin-left: 1rem;
+}
+
+.logo {
+  padding-left: 1em;
+  padding-right: 1em;
+  height: 40px;
+  vertical-align: middle;
+  margin-bottom: 18px;
+}
+
+.logo:hover {
+  transform: scale(1.07);
+}
+
+ul.horizontal-list {
+  min-width: 696px;
+  list-style: none;
+}
+ul.horizontal-list li {
+  display: inline;
+  padding-bottom: 0.8rem;
+}
+
+/* End of Navbar */
+
+
+</style>
+<body>
+    <div>
+        <nav>
+          <ul class="horizontal-list">
+            <li class="navLink"><a class="navLink" href=https://azure.microsoft.com/en-us><img class="logo" src="https://upload.wikimedia.org/wikipedia/commons/a/a8/Microsoft_Azure_Logo.svg"></img></a></li>
+            <li><a class="navLink" href=/. >Home</a></li>
+            <li><a class="navLink" href=/protected >Calculate Resource Emissions</a></li>
+            <li><a class="navLink" href=/pred_shift_find >Time/Region Shifting</a></li>
+            <li><a class="navLink" href=/ci_data >Get Carbon Intensity Data</a></li>
+            <li><a class="navLink" href=/all_index>Explore Global Carbon Intensity</a></li>
+            <li><a class="navLink" href=/docs_page>Documentation</a></li>
+          </ul>
+        </nav>
+      </div>
+  
+    <header class="jumbotron jumbotron-fluid text-white title-background">
+        <div class="content">
+          <h1 class="heading">WattTime Region Information</h1>
+        </div>
+    </header>
+
+        <div class="main_content">
+
+            <h1>Balancing Authority: <span class="text-primary">{{data.name}}</span></h1> 
+            <strong>Real-time emission: </strong>{{data.moer_value}} <span><sup>lbs</sup>&frasl;<sub>MWh</sub></span><br>
+            <p style="color:red;">{{msg}}</p>
+                <!-- Break -->
+                <div class="pt-2">
+                    <br>
+                </div>
+
+                <div class="pt-2">
+                    <br>
+                </div>
+
+                <div class="pt-2">
+                    <br>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-10 col-xl-4 d-flex card">
+                        <div class="mb-3">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-sm">
+                                        <p class="number text-primary"><strong> Last 24 Hours</strong></p>
+                                        <!-- Max length: 16 -->
+                                        
+                                        <h2 class="card-title">Average MOER</h2>
+                                        <p class="number text-primary"><strong>{{data.avg_day}}</strong> <span><sup>lbs</sup>&frasl;<sub>MWh</sub></span></p>
+                                        <h2 class="card-title">Percentage of Time at 0g of Carbon</h2>
+                                        <p class="number text-primary"><strong>{{data.day}}%</strong> </p>
+                                        <h2 class="card-title">Number of Times at 0g of Carbon</h2>
+                                        <p class="number text-primary"><strong>{{data.num_day_0}}</strong> <span><sup> </sup>&frasl;<sub>day</sub></span></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="ml-5">
+                        <br>
+                    </div>
+
+                    <!-- Dimension: 400px height with 750px width -->
+                    <div class="col-md-10 col-xl-7 d-flex card_graph">
+                        <div class="mb-3">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-sm">
+                                        <!-- Replace the graph here -->
+                                        <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+                                        <div class="graph1">
+                                            <script>
+                                                var graphs = {{plot1 | safe}}
+                                            </script>
+                                        </div>   
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+
+        <div class="main_content">
+                <!-- Spacing -->
+                <div class="pt-5">
+                    <br>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-10 col-xl-4 d-flex card">
+                        <div class="mb-3">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-sm">
+                                        <p class="number text-primary"><strong> Last 7 Days</strong></p>
+                                        <h2 class="card-title">Average MOER</h2>
+                                        <p class="number text-primary"><strong>{{data.avg_week}} </strong> <span><sup>lbs</sup>&frasl;<sub>MWh</sub></span></p>
+                                        <h2 class="card-title">Percentage of Time at 0g of Carbon</h2>
+                                        <p class="number text-primary"><strong>{{data.week}}%</strong> </p>
+                                        <h2 class="card-title">Number of Times at 0g of Carbon</h2>
+                                        <p class="number text-primary"><strong>{{data.num_week_0}}</strong> <span><sup> </sup>&frasl;<sub>week</sub></span></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="ml-5">
+                        <br>
+                    </div>
+
+                    <!-- Dimension: 400px height with 750px width -->
+                    <div class="col-md-10 col-xl-7 d-flex card_graph">
+                        <div class="mb-3">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-sm">
+                                        <!-- Replace the graph here -->
+                                        <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+                                        <div class="graph1">
+                                            <script>
+                                                var graphs = {{plot2 | safe}}
+                                            </script>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+
+        <div class="main_content">
+                <!-- Spacing -->
+                <div class="pt-5">
+                    <br>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-10 col-xl-4 d-flex card">
+                        <div class="mb-3">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-sm">
+                                        <p class="number text-primary"><strong> Last 30 Days</strong></p>
+                                        <h2 class="card-title">Average MOER</h2>
+                                        <p class="number text-primary"><strong>{{data.avg_month}} </strong> <span><sup>lbs</sup>&frasl;<sub>MWh</sub></span></p>
+                                        <h2 class="card-title">Percentage of Time at 0g of Carbon</h2>
+                                        <p class="number text-primary"><strong>{{data.month}}%</strong> </p>
+                                        <h2 class="card-title">Number of Times at 0g of Carbon</h2>
+                                        <p class="number text-primary"><strong>{{data.num_month_0}}</strong> <span><sup> </sup>&frasl;<sub>month</sub></span></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="ml-5">
+                        <br>
+                    </div>
+
+                    <!-- Dimension: 400px height with 750 width -->
+                    <div class="col-md-10 col-xl-7 d-flex card_graph">
+                        <div class="mb-3">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-sm">
+                                        <!-- Replace the graph here -->
+                                        <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+                                        <div class="graph1">
+                                            <script>
+                                                var graphs = {{plot3 | safe}}
+                                            </script>
+                                        </div>  
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Add spacing -->
+                <div class="pt-5">
+                    <br>
+                </div>
+
+                <div class="ml-5">
+                    <br>
+                </div>
+
+                <div class="row">
+                    <h5 class="text-center">Data provided by: </h5> 
+                    <a class="mt-2" href="https://www.watttime.org"><img class="watt_img" src="https://d1zx4fn8ox8446.cloudfront.net/filemanager.rboxfile/b3b6144afe8a47ceb2e5c274ed58d6a6/WattTime_logo_transparent.png"></img></a>    
+                </div>
+            </div>
+        </div>
+    <!-- Add blank space -->
+    <div class="pt-5">
+        <br>
+    </div>
+
+    <div class="pt-5">
+        <br>
+    </div>
+</body>
+</html>

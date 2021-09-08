@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Azure GreenAI Carbon-Intensity API</title>
+
+<!-- link in Bootstrap here -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" 
+integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Segoe UI";
+}
+
+h1 {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.main_content {
+  margin-top: 80px;
+  margin-left: 325px;
+  margin-right: 325px;
+  text-align: center;
+}
+
+.boxed {
+    border: 2px solid #1a1a1f;
+    position: relative; 
+    border-radius: 15px;
+}
+
+.text-center {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.graph1 {
+    height: 450px;
+    margin-left: 150px;
+    margin-right: 150px;
+    justify-content: center;
+
+}
+
+.graph2 {
+    margin-left: 250px;
+    margin-right: 250px;
+    height: 675px;
+    justify-content: center;
+}
+
+
+.heading {
+  margin-bottom: 60px;
+}
+
+.row {
+    justify-content: center;
+    text-align: center;
+}
+
+.card-title {
+    font-size: 17px;
+    text-align: center;
+    font-weight: bold;
+    
+}
+
+.number {
+    font-size: 1em;
+}
+
+.blues { color: #1a60ac; }
+
+
+.reds { color: #da1b1b; }
+
+.greens { color: #1fa82a; }
+
+.content {
+  margin-top: 150px;
+  text-align: center;
+}
+
+.card {
+  justify-content: center;
+  border: 1.5px solid  #c7c7c7;
+  border-radius: 20px;
+  display: inline-block;
+  padding: 1em;
+  margin: 1em 1em 2em 0em;
+}
+
+.small_card {
+  border: 1px solid  #1a1a1f;
+  border-radius: 20px;
+  margin-bottom: 30px;
+  display: inline-block;
+}
+
+.black-text {
+    color: #1a1a1f;
+    font-size: 24px;
+}
+.green-text {
+    color: #0fc44b;
+    font-weight: bold;
+    font-size: 24px;
+}
+
+.red-text {
+    color: #df0c0c;
+    font-weight: bold;
+    font-size: 24px;
+}
+
+.content_center {
+    text-align: center;
+}
+
+.cardContent {
+    text-align: left;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.card {
+    justify-content: center;
+    border: 2px solid #D3D3D3;
+    border-radius: 20px;
+    height: 19em;
+    width: 100%;
+}
+
+.title-desc {
+    margin-left: 4rem
+}
+
+.main_title {
+    margin-top: 150px;
+}
+
+.ex_margin {
+    margin-left: 8rem;
+    margin-right: 8rem;
+}
+
+.fig_margin {
+    margin-left: 10rem;
+    margin-right: 10rem;
+}
+
+.stats_row {
+    text-align: left;
+}
+
+h5 {
+  font-size: 1em;
+}
+
+
+.title-background {
+    background-color: #007fff;
+    padding: 0.5px;
+}
+
+.moreButton {
+  margin-bottom: 20px;
+}
+
+.carbon_data {
+    font-size: 2em;
+}
+
+.image {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Navbar */
+nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #1a1a1f;
+    padding: .75rem;
+    padding-bottom: 10px;
+    z-index: 6;
+}
+
+a {
+  color: #007fff;
+  text-decoration: none;
+}
+
+.navLink {
+    color: white;
+    text-decoration: none;
+    padding: .8rem;
+    vertical-align: middle;
+    margin-bottom: 1rem;
+}
+
+a:hover {
+  color: gray;
+}
+
+ul {
+    margin: 0;
+    padding: 0;
+    padding-top: .5rem;
+    display: inline-block;
+}
+
+li {
+  margin-bottom: 1rem;
+  margin-left: 1rem;
+}
+
+.logo {
+  padding-left: 1em;
+  padding-right: 1em;
+  height: 40px;
+  vertical-align: middle;
+  margin-bottom: 18px;
+}
+
+.logo:hover {
+  transform: scale(1.07);
+}
+
+ul.horizontal-list {
+  min-width: 696px;
+  list-style: none;
+}
+ul.horizontal-list li {
+  display: inline;
+  padding-bottom: 0.8rem;
+}
+
+/* End of Navbar */
+</style>
+
+<body>
+    <div>
+        <nav>
+          <ul class="horizontal-list">
+            <li class="navLink"><a class="navLink" href=https://azure.microsoft.com/en-us><img class="logo" src="https://upload.wikimedia.org/wikipedia/commons/a/a8/Microsoft_Azure_Logo.svg"></img></a></li>
+            <li><a class="navLink" href=/. >Home</a></li>
+            <li><a class="navLink" href=/protected >Calculate Resource Emissions</a></li>
+            <li><a class="navLink" href=/pred_shift_find >Time/Region Shifting</a></li>
+            <li><a class="navLink" href=/ci_data >Get Carbon Intensity Data</a></li>
+            <li><a class="navLink" href=/all_index>Explore Global Carbon Intensity</a></li>
+            <li><a class="navLink" href=/docs_page>Documentation</a></li>
+          </ul>
+        </nav>
+      </div>
+  
+    <header class="jumbotron jumbotron-fluid text-white title-background">
+        <div class="content">
+          <h1 class="heading">{{data.AZ}} Job Analysis</h1>
+        </div>
+    </header>
+    <br>
+
+
+    <div class="row cardContent">
+        <div class="ex_margin row  cardContent">
+            <div class="col-md-4 col-xl-4 card">
+                <h5 class="main_desc"><strong>Total carbon emissions comparison:</strong></h5>
+                <div class="row">
+                    <div class="col-md-5 col-xl-5 cardContent">
+                        <h5>If run were executed in <center><b>{{data.pair}}</b></center></h5>
+                        <h5>Total Emissions:</h5>
+                        <!-- Number -->
+                        <h5 id="delta"></h5>&nbsp
+                        <!-- Text -->
+                        <h5 id="msg"></h5>
+                        <script>
+                            var number = {{data.delta}};
+                            if (number > 0){
+                                {
+                                    sign = "%";
+                                    var value = Math.abs(number) + sign
+                                    document.getElementById("delta").innerHTML = `<span class='green-text carbon_data'>${value}</span>`;
+                                    document.getElementById("msg").innerHTML = "<span class='green-text'>Carbon Reduction</span>";
+                
+                                };
+                                }
+                            else if (number == 0){
+                                {
+                                    sign = "%";
+                                    var value = Math.abs(number) + sign
+                                    document.getElementById("delta").innerHTML = `<span class='black-text carbon_data'>${value}</span>`;
+                                    document.getElementById("msg").innerHTML = "Carbon Reduction";
+                                };
+                                }
+                            else{
+                                {
+                                    sign = "%";
+                                    var value = Math.abs(number) + sign
+                                    document.getElementById("delta").innerHTML = `<span class='red-text carbon_data'>${value}</span>`;
+                                    document.getElementById("msg").innerHTML = "<span class='red-text'>Extra Carbon</span>";
+                                };
+                                }
+                
+                        </script>
+                    </div>
+
+                    <div class="col-md-5 col-xl-5 cardContent">
+                        <h5>If time were shifted by <center><b>{{data.hour_shift}}</b> hours</center></h5>
+                        <h5>Total Carbon Emissions:</h5>
+                        <h5 id="timeshift"></h5>&nbsp
+                        <h5 id="msg2"></h5>
+                        <script>
+                            var number2 = {{data.delta_shift}};
+                            if (number2 > 0){
+                                {
+                                    sign = "%";
+                                    var value2 = Math.abs(number2) + sign
+                                    document.getElementById("timeshift").innerHTML = `<span class='green-text carbon_data'>${value2}</span>`;
+                                    document.getElementById("msg2").innerHTML = "<span class='green-text'>Carbon Reduction</span>";
+                
+                                };
+                                }
+                            else if (number2 == 0){
+                                {
+                                    sign = "%";
+                                    var value2 = Math.abs(number2) + sign
+                                    document.getElementById("timeshift").innerHTML = `<span class='black-text carbon_data'>${value2}</span>`;
+                                    document.getElementById("msg2").innerHTML = "Carbon Reduction";
+                                };
+                                }
+                            else{
+                                {
+                                    sign = "%";
+                                    var value2 = Math.abs(number2) + sign
+                                    document.getElementById("timeshift").innerHTML = `<span class='red-text carbon_data'>${value2}</span>`;
+                                    document.getElementById("msg2").innerHTML = "<span class='red-text'>Extra Carbon</span>";
+                                };
+                                }
+                
+                             </script>
+                        <br>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-5 col-xl-5">
+                <div class="cardContent mt-3 card">
+                    <div>
+                        <div class="ml-2">
+                            <h5 class="main_desc"><strong>Overview:</strong></h5>
+
+                            <h5 class="ml-3">Peak Carbon Emission:  <span class="number text-primary"><strong>{{data.peak_c_max}}</strong></span> lbs per <span class="number text-primary"><strong>5</strong></span> minutes at <span class="number text-primary"><strong>{{data.peak_c_time}}</strong></span></h5>
+                            <h5 class="ml-3">Peak Energy Consumption: <span class="number text-primary"><strong>{{data.peak_e_max}}</strong></span> kWh per <span class="number text-primary"><strong>5</strong> </span>minutes at <span class="number text-primary"><strong>{{data.peak_e_time}}</span></strong></h5>
+                            <h5 class="ml-3">Run Duration: <span class="number text-primary"><strong>{{data.length}}</strong></span></h5>
+                            <h5 class="ml-3">Balancing Authority Emissions at 0 <span><sup>lbs</sup>/<sub>MWh</sub></span> <strong><span class="number text-primary">{{data.day}}</span></strong>% of the run.</h5>
+                            <h5 class="ml-3">Current {{data.AZ}} Carbon Intensity: &nbsp<strong><span class="number text-primary">{{data.rt_data}}</strong></span> <span><sup>lbs</sup>&frasl;<sub>MWh</sub></span> in <strong><span class="number text-primary">{{data.name}}</span></strong></h5>
+                            <h5 class="ml-3"><b>If shifted to {{data.pair}} Total Carbon Emissions would be <span class="number text-primary"><strong>{{data.option}}</strong></span> lbs</b></h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-2 col-xl-2">
+                <div class="cardContent mt-3 card">
+                    <div>
+                        <div class="ml-2">
+                            <h5 class="main_desc"><strong>For the Azure ML Run:</strong></h5>
+                            <h5 class="ml-3">Mean Emission Rate:</h5>
+                            <h5 class="ml-3"><span class="number text-primary"><strong>{{data.avg}}</strong><span><sup>lbs</sup>&frasl;<sub>∆t</span></span></h5>
+                            <h5 class="ml-3">Total Carbon Emissions: </h5>
+                            <h5 class="ml-3"><span class="number text-primary"><strong>{{data.total_carbon}}</strong> lbs</span></h5>
+                            <h5 class="ml-3">Total Energy Used: </h5>
+                            <h5 class="ml-3"><span class="number text-primary"><strong>{{data.energy}}</strong> kWh</span></h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+          
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <div class="graph1">
+        <script>
+            var graphs = {{plot4 | safe}};
+        </script>
+    </div>
+
+    <div class="ml-3 mr-3">
+        <div class="fig_margin row">
+            <div class="col-md-3 col-xl-3">
+                <p class="text-center"><b>Figure 1: Carbon Emissions over Time-- </b>The above plot shows the amount of Carbon in pounds per ∆t. </p>
+ 
+
+
+        
+            </div>
+
+            <div class="col-md-1 col-xl-1">
+            </div>
+
+            <div class="col-md-3 col-xl-3">
+                <p class="text-center"><b>Figure 2: Energy Consumed over Time--  </b> This plot shows the energy consumption in mega-watt hours for per ∆t.</p>
+                <div class="content_center">
+                    
+                </div>
+
+
+            </div>
+            
+            <div class="col-md-1 col-xl-1">
+            </div>
+            
+            <div class="col-md-3 col-xl-3">
+                <div>
+                    <p class="text-center"><b>Figure 3: WattTime Region Intensity--  </b> This plot shows Emission intensity (CO<sub>2</sub>/MWh) for the WattTime region that supports the used Azure region.<br></p>                        
+                </div>  
+            </div>
+        </div>
+    </div>
+    <br>
+
+    <h3 class="main_content"><strong>More Detail</strong></h3>
+
+    <!-- Plot 1 -->
+    <div class="graph2">
+        <script>
+            var graphs = {{plot1 | safe}}
+        </script>
+    </div>
+    <div class="content_center">
+        <div class="small_card">
+            <p class="ml-3 mt-3 mr-3 mb-3 cardContent">
+                <b><span class="blues">Blue</span></b>: all data from the energy profile. 
+                <br>
+                <b><span class="reds">Red</span></b>: data points that fall in the top 5 percentile of the emission range. 
+                <br>
+                <b><span class="greens">Green</span></b>: data points that fall in the bottom 5 percentile of the emission range.
+            </p> 
+        </div>
+    </div>
+    <div class="main_content mt-2">
+        <p class="text-center"><b>Figure 1: Carbon Emissions over Time-- </b>The above interactive time series plot shows the amount of Carbon in pounds per ∆t. </p>
+    
+
+        <p>The time-zone of the x-axis is the same as the one defined when setting of Azure Monitor when the data was pulled. 
+        If data was downloaded through the portal, it is defined in the granularity settings.  
+        If data is from GET request, time zone defualts to UTC. <br></p>
+        <p class="content_center"><b>Note: </b>This plot is available for download as a .png via the camera icon at its top right. To reset the zoom, double click the plot.</p>
+    </div>
+    <br>
+    <!-- Plot 2 -->
+    <div class="graph2">
+        <script>
+            var graphs = {{plot2 | safe}}
+        </script>
+    </div>
+    <div class="content_center">
+        <div class="small_card">
+            <p class="ml-3 mt-3 mb-3 mr-3 cardContent">
+                <b><span class="blues">Blue</span></b>: all data from the energy profile.
+                <br>
+                <b><span class="reds">Red</span></b>: the timestamp with the highest energy consumption over the entire metric summary.
+            </p>
+        </div>
+    </div>
+    <div class="main_content mt-2">
+        <p class="text-center"><b>Figure 2: Energy Consumed over Time--  </b> This time series plot shows the energy consumption in mega watt hours for each ∆t.</p>
+        <p>
+            The time-zone of the x-axis is the same as the one defined when setting of Azure Monitor when the data was pulled. 
+            If data was downloaded through the portal, it is defined in the granularity settings.  
+            If data is from GET request, time zone defualts to UTC. 
+        </p>
+        <p class="content_center"><b>Note: </b>This plot is available for download as a .png via the camera icon at its top right. To reset the zoom, double click the plot.</p>
+    </div>
+<br>
+    <!-- Plot 3 -->
+    <div class="graph2">
+        <script>
+            var graphs = {{plot3 | safe}}
+        </script>
+    </div>
+
+    <div class="main_content mt-2">
+        <p class="text-center"><b>Figure 3: WattTime Region Intensity--  </b> This plot shows Emission intensity (CO<sub>2</sub>/MWh) for the WattTime region that supports the used Azure region. This is the emissions during the time of the Monitor file supplied.<br></p>
+        <p><b>Note: </b>This plot is available for download as a .png via the camera icon at its top right. To reset the zoom, double click the plot.</p>  
+    </div>
+
+
+
+        </div>
+
+    <!-- Add blank space -->
+    <div class="pt-5">
+        <br>
+    </div>
+    <div class="pt-5">
+        <br>
+    </div>
+
+</body>
+</html>
+
