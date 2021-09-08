@@ -1,0 +1,193 @@
+<!-- The page with "Accepted Input Formats for Timestamps" information. -->
+
+<!DOCTYPE html>
+<html lang="en">
+<title>Azure GreenAPI</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+* {
+  box-sizing: border-box;
+  font-family: "Segoe UI";
+}
+
+body {
+  margin: 0;
+  font-family: "Segoe UI";
+}
+
+.content {
+  margin-top: 150px;
+  margin-left: 350px;
+  margin-right: 350px;
+}
+
+.subBullet {
+  margin-left: 2rem;
+}
+
+.mainInfo {
+  margin-left: 2em;
+}
+
+.infoTitle {
+  margin-top: 2em;
+}
+
+/* Navbar */
+nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #1a1a1f;
+    padding: .75rem;
+    padding-bottom: 10px;
+    z-index: 6;
+}
+
+a {
+  color: #007fff;
+  text-decoration: none;
+}
+
+.navLink {
+    color: white;
+    text-decoration: none;
+    padding: .8rem;
+    vertical-align: middle;
+    margin-bottom: 1rem;
+}
+
+a:hover {
+  color: gray;
+}
+
+ul {
+    margin: 0;
+    padding: 0;
+    padding-top: .5rem;
+    display: inline-block;
+}
+
+li {
+  margin-bottom: 1rem;
+  margin-left: 1rem;
+}
+
+.logo {
+  padding-left: 1em;
+  padding-right: 1em;
+  height: 40px;
+  vertical-align: middle;
+  margin-bottom: 18px;
+}
+
+.logo:hover {
+  transform: scale(1.07);
+}
+
+ul.horizontal-list {
+	min-width: 696px;
+	list-style: none;
+}
+ul.horizontal-list li {
+	display: inline;
+  padding-bottom: 0.8rem;
+}
+
+/* End of Navbar */
+
+</style>
+
+<body>
+    <div>
+      <nav>
+        <ul class="horizontal-list">
+          <li class="navLink"><a class="navLink" href=https://azure.microsoft.com/en-us><img class="logo" src="https://upload.wikimedia.org/wikipedia/commons/a/a8/Microsoft_Azure_Logo.svg"></img></a></li>
+          <li><a class="navLink" href=/. >Home</a></li>
+          <li><a class="navLink" href=/protected >Calculate Resource Emissions</a></li>
+          <li><a class="navLink" href=/pred_shift_find >Time/Region Shifting</a></li>
+          <li><a class="navLink" href=/ci_data >Get Carbon Intensity Data</a></li>
+          <li><a class="navLink" href=/all_index>Explore Global Carbon Intensity</a></li>
+          <li><a class="navLink" href=/docs_page>Documentation</a></li>
+        </ul>
+      </nav>
+    </div>
+
+
+    <div class="content">
+      <div class="body">
+        <h1>Accepted Input Formats for Timestamps</h1>
+        <div class="mainInfo">
+          <p class="infoTitle"><strong>Preconfigured as ISO format preferred</strong></p>
+          <br><br>
+          <p><strong>Easy input with the following constraints:</strong></p>
+            <ul>
+              <li>Possible value separators:</li>
+                <ul class="subBullet">
+                  <li>Spaces, Dashes, Backslashes</li>
+                </ul>
+            </ul><br><br>
+             <b>Date:</b>
+              <li>If Month is written in english</li>
+              
+                <ul class="subBullet">
+                  <li>month-day-year    &emsp;&emsp;&emsp; ex: July 24 2020</li>
+                  <li>year-month-day    &emsp;&emsp;&emsp;  ex: 2020 July 24</li>
+                  <li>month-year-day &emsp;&emsp;&emsp;   ex: July 2020 24</li>
+                  <li>day-year-month    &emsp;&emsp;&emsp;  ex: 24 2020 July</li>
+                  <li>year-day-month   &emsp;&emsp;&emsp;   ex: 2020 24 July</li>
+                </ul>
+              <li>If month is numeric representation, day and month need to be connected with month preceding day</li>
+                <ul class="subBullet">
+                  <li>month-day-year   &emsp;&emsp;&emsp; ex: 7/24/2020</li>
+                  <li>year-month-day &emsp;&emsp;&emsp;  ex: 2020/7/24</li>
+                </ul>
+                <br><br>
+              <b>Time</b> - accepts both 12 and 24-hour clocks formats<br>
+                <ul class="subBullet">
+                  <li>Default input is 24-hour clock</li>
+                  <li>12-hour am/pm designations accepted</li>
+                </ul>
+                <br>
+              <br><b>Precision Designation:</b><br>
+                <ul class="subBullet">
+                  <li>Needs only 1 digit in hour position</li>
+                  <li>Must use colons to separate time precision levels</li>
+                  <li>Can specify time to only 2 digits of precision for each time position, down to seconds marker</li>
+                    <ul class="subBullet">
+                      <li>Time precision format HH:MM:SS</li>
+                      <li>Ex: If 1 is input, it assumes 01:00:00</li>
+                      <li>Ex: If 1pm in input, it assumes 13:00:00</li>
+                    </ul>
+                    </ul>
+                    <br>
+              <br><b>Time Zone:</b><br>
+                <li>Input with a ISO numeric offset</li>
+                <ul class="subBullet">
+                  <li>Ex: Time input as: 13:00:00-0800</li>
+                  </ul>
+                  <li>If not preconfigured ISO:</li>
+                    <ul class="subBullet">
+                      <li>A space is needed between datetime and time zone</li>
+                      <li>Explicitly designate time zone via standard abbreviation</li>
+                        <ul class="subBullet">
+                          <li>Ex: PST, CST, PDT, etc.</li>
+                        </ul>
+                      <li>Time zone is an optional time input</li>
+                    
+                  <li>If none designated, default assumption is UTC</li>
+                </ul></ul>      
+            </ul>
+          <p>If no given datetime stamp is given for an endpoint that requires one as a parameter, defaults to current datetime as input.</p>
+        </div>
+      </div>
+    </div>
+    <br><br><br>
+  </body>
+</html>
+
+
+
+

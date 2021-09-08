@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Azure GreenAI Carbon-Intensity API</title>
+  
+  <!-- link in Bootstrap here -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" 
+  integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Segoe UI";
+}
+
+h1 {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.main_content {
+  margin-top: 50px;
+  margin-left: 175px;
+  margin-right: 175px;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.graph1 {
+    text-align: center;
+}
+
+image {
+    height: 300px;
+}
+
+.row {
+    justify-content: center;
+}
+
+.text-center {
+    padding: 15px;
+}
+
+.content {
+  margin-top: 150px;
+  text-align: center;
+}
+
+.heading {
+  margin-bottom: 60px;
+}
+
+.card {
+    justify-content: center;
+    border: 4px solid  #1a1a1f;
+    border-radius: 20px;
+
+}
+
+.title-background {
+    background-color: #007fff;
+    padding: 0.5px;
+}
+
+.appendixLink {
+    color: black;
+    text-decoration: none;
+    display: inline-block;
+    padding: .8rem;
+    vertical-align: middle;
+}
+.appendixLink:hover {
+  color: #007fff;
+  text-decoration: none;
+}
+
+.boxed {
+    border: 2px solid #1a1a1f;
+    position: relative;
+    /* background: #B3DCF3; */
+    border-radius: 15px;
+}
+
+.graph1 {
+    margin-left: 20px;
+    margin-right: 20px;
+    justify-content: center;
+}
+
+/* Navbar */
+nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #1a1a1f;
+    padding: .75rem;
+    padding-bottom: 10px;
+    z-index: 6;
+}
+
+a {
+  color: #007fff;
+  text-decoration: none;
+}
+
+.navLink {
+    color: white;
+    text-decoration: none;
+    padding: .8rem;
+    vertical-align: middle;
+    margin-bottom: 1rem;
+}
+
+a:hover {
+  color: gray;
+}
+
+ul {
+    margin: 0;
+    padding: 0;
+    padding-top: .5rem;
+    display: inline-block;
+}
+
+li {
+  margin-bottom: 1rem;
+  margin-left: 1rem;
+}
+
+.logo {
+  padding-left: 1em;
+  padding-right: 1em;
+  height: 40px;
+  vertical-align: middle;
+  margin-bottom: 18px;
+}
+
+.logo:hover {
+  transform: scale(1.07);
+}
+
+ul.horizontal-list {
+  min-width: 696px;
+  list-style: none;
+}
+ul.horizontal-list li {
+  display: inline;
+  padding-bottom: 0.8rem;
+}
+
+/* End of Navbar */
+</style>
+<body>
+  <div>
+    <nav>
+      <ul class="horizontal-list">
+        <li class="navLink"><a class="navLink" href=https://azure.microsoft.com/en-us><img class="logo" src="https://upload.wikimedia.org/wikipedia/commons/a/a8/Microsoft_Azure_Logo.svg"></img></a></li>
+        <li><a class="navLink" href=/. >Home</a></li>
+        <li><a class="navLink" href=/protected >Calculate Resource Emissions</a></li>
+        <li><a class="navLink" href=/pred_shift_find >Time/Region Shifting</a></li>
+        <li><a class="navLink" href=/ci_data >Get Carbon Intensity Data</a></li>
+        <li><a class="navLink" href=/all_index>Explore Global Carbon Intensity</a></li>
+        <li><a class="navLink" href=/docs_page>Documentation</a></li>
+      </ul>
+    </nav>
+  </div>
+
+    <header class="jumbotron jumbotron-fluid text-white title-background">
+        <div class="content">
+          <h1 class="heading">Project Slide Decks</h1>
+        </div>
+    </header>
+
+        <div class="main_content">
+            <div class="container mb-5">
+                <h3 class="text-center">Project Checkpoint Slide Deck</h3>
+                <div class="row">
+                    
+                  <iframe src="https://onedrive.live.com/embed?resid=7A76240357EBCACD%21181676&amp;authkey=%21AH9D0RgrvzH-JlQ&amp;em=2&amp;wdAr=1.7777777777777777" width="962px" height="565px" frameborder="0">This is an embedded <a target="_blank" href="https://office.com">Microsoft Office</a> presentation, powered by <a target="_blank" href="https://office.com/webapps">Office</a>.</iframe>
+
+                </div>
+                <p class="main_content">Slide deck for the halfway checkpoint of the project.  Covers motivation for using marginal emissions as a metric and high-level architecture of the API.  At this time, construction was beginning for load shifting features and calculating Azure emissions using WattTime grid records.</p>
+                <br><br>
+
+                <div class="pt-1">
+                    <br><br><br>
+                </div>
+                <h3 class="text-center">Project Conclusion Slide Deck</h3>
+                <div class="row">
+                    
+                  <div class="row">
+                    
+                    <iframe src="https://onedrive.live.com/embed?cid=7A76240357EBCACD&amp;resid=7A76240357EBCACD%21181975&amp;authkey=AI7W9-6I8kPbjU0&amp;em=2&amp;wdAr=1.7777777777777777" width="962px" height="565px" frameborder="0">This is an embedded <a target="_blank" href="https://office.com">Microsoft Office</a> presentation, powered by <a target="_blank" href="https://office.com/webapps"></a></iframe>
+  
+                  </div>
+                  <p class="main_content">Slide deck for the end of the project. Brief recap of project space and use of marginal emission metrics, followed by an outline of the project tools and methods.  Ends with an exposition of the features Carbon Intensity API offers, recommended use cases, and an outline of work to take the project forward.  At this stage, the Carbon Intensity API can deliver and analyze WattTime data, provide emissions profiles for energy profiles, and offer load shifting suggestions across regions or time.</p>
+
+                </div>
+            </div>
+        </div>
+
+
+    <!-- Add blank space -->
+    <div class="pt-5">
+        <br>
+        </div>
+        <div class="pt-5">
+        <br>
+        </div>
+</body>
+</html>
+
+
+

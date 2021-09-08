@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Azure GreenAI Carbon-Intensity API</title>
+<style>
+* {
+  box-sizing: border-box;
+  font-family: 'Segoe UI';
+}
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI';
+}
+
+.logo2 {
+  height: 20px;
+  vertical-align: middle;
+  margin-bottom: 7px;
+}
+
+.content {
+  margin-top: 150px;
+  margin-left: 350px;
+  margin-right: 350px;
+}
+
+.red { color: #aa1c1c; }
+.yellow-background { background-color: rgb(247, 247, 165); }​
+
+.card {
+    justify-content: center;
+    border: 2px solid  #1a1a1f;
+    border-radius: 20px;
+    display:inline-block;
+    margin-left: 3rem;
+    margin-bottom: 1rem;
+}
+
+.markdown {
+  margin-left: 2rem;
+  margin-right: 2rem;
+}
+
+/* Navbar */
+nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #1a1a1f;
+    padding: .75rem;
+    padding-bottom: 10px;
+    z-index: 6;
+}
+
+a {
+  color: #007fff;
+  text-decoration: none;
+}
+
+.navLink {
+    color: white;
+    text-decoration: none;
+    padding: .8rem;
+    vertical-align: middle;
+    margin-bottom: 1rem;
+}
+
+a:hover {
+  color: gray;
+}
+
+ul {
+    margin: 0;
+    padding: 0;
+    padding-top: .5rem;
+    display: inline-block;
+}
+
+li {
+  margin-bottom: 1rem;
+  margin-left: 1rem;
+}
+
+.logo {
+  padding-left: 1em;
+  padding-right: 1em;
+  height: 40px;
+  vertical-align: middle;
+  margin-bottom: 18px;
+}
+
+.logo:hover {
+  transform: scale(1.07);
+}
+
+ul.horizontal-list {
+  min-width: 696px;
+  list-style: none;
+}
+ul.horizontal-list li {
+  display: inline;
+  padding-bottom: 0.8rem;
+}
+
+/* End of Navbar */
+</style>
+  <body>
+    <div>
+      <nav>
+        <ul class="horizontal-list">
+          <li class="navLink"><a class="navLink" href=https://azure.microsoft.com/en-us><img class="logo" src="https://upload.wikimedia.org/wikipedia/commons/a/a8/Microsoft_Azure_Logo.svg"></img></a></li>
+          <li><a class="navLink" href=/. >Home</a></li>
+          <li><a class="navLink" href=/protected >Calculate Resource Emissions</a></li>
+          <li><a class="navLink" href=/pred_shift_find >Time/Region Shifting</a></li>
+          <li><a class="navLink" href=/ci_data >Get Carbon Intensity Data</a></li>
+          <li><a class="navLink" href=/all_index>Explore Global Carbon Intensity</a></li>
+          <li><a class="navLink" href=/docs_page>Documentation</a></li>
+        </ul>
+      </nav>
+    </div>
+
+    <div class="content">
+      <div class="body">
+
+        
+        <h1>Retrieving Data from Azure Monitor</h1>
+        <h2>Direct Monitor Download Through Azure Portal</h2>
+        <img src='https://s3.gifyu.com/images/GreenAPI-Tutorial-GIF.gif' style="height:600px ;width:1000px"><br><br><br><br>
+        <h4>Getting to the Azure Monitor</h4>
+        <ol type = '1'>
+            <li>Click the <img class="logo2" src="https://upload.wikimedia.org/wikipedia/commons/a/a8/Microsoft_Azure_Logo.svg"></img> Logo at the top right of the screen or independently navigate to: <a href="https://azure.microsoft.com/en-us/">https://azure.microsoft.com/en-us/</a></li>
+            <li>  Login to your Portal</li>
+            <li>  In the “Azure services” selection menu, choose “Monitor” </li>
+            <li> In the navigation menu on the left, choose “Metrics”</li>
+                <ol type ='a'>
+                <li> If this menu is not available, click the >> icon under “Monitor|Overview”</li>
+                </ol>
+            </ol>
+        <h4>Finding your resource</h4>
+        <ol>
+            <li>Create scope:</li>
+                
+                <li> Select the <i>resource group</i> associated to the ML runs</li>
+                <li>Refine scope:</li>
+                    <ol type ='i'>
+                        <li>Select a esource typer, ex: “Machine Learning”</li>
+                        <li>Select the location of the Azure region the workspace is associated to: ex “East US 2”</li>
+                        <li>Select the resource: ex “ML_Workspace_Name”</li>
+                        <li>Apply selections</li>
+                    </ol>
+                </ol>
+          <h4>Aggregate GPU Energy Data</h4>
+          <ol>
+            <li>Define Scope:</li>
+                <ol type ='a'>
+                <li> Select the metric “GpuEnergyJoules”</li>
+                <li> Select the aggregation “Sum”</li>
+                </ol>
+            <li>Change granularity:</li>
+                <ol type ='a'>
+                <li> Click icon at the top right of the plot region that displays granularity information</li>
+                    <ol type ='i'>
+                        <li>By default, this is set to: “Local Time: Last 24 hours (Automatic)”</li>
+                    </ol>
+                <li>In the Time granularity dropdown, select “5 minutes”</li>
+                <li>In the Time range selection, select “Custom”</li>
+                     <ol type ='i'>
+                        <li>Enter Start and End times for run</li>
+                        
+                    </ol>
+                <li>Apply changes</li>
+                </ol>
+              </ol>
+          <h4>Download the Data </h4>
+          <ol>
+            <li>In the “Share” dropdown, select download to excel</li>
+            <li>Convert the data from .xlsx to .csv format with numeric index</li>
+                <ol type ='a'>
+                <li>    Can be done in Python with the following:</li>
+                </ol>
+        
+                  <div class="card">
+                    <p class="markdown">import pandas as pd</p>
+                    <p class="markdown"># read in .xlsx file downloaded from Azure Metrics</p>
+                    <p class="markdown">excel_file = pd.read_excel('Metrics.xlsx')[10:]</p>
+                    <p class="markdown"># verify data format matches input specifications</p>
+                    <p class="markdown">print(excel_file[:3])</p>
+                    <p class="markdown">print(excel_file[-3:])</p>
+                    <p class="markdown"># write to .csv stored in working directory</p>
+                    <p class="markdown">excel_file.to_csv('ML_energy_profile.csv')</p>
+                  </div>
+
+                 
+                  
+
+
+        <p><b><span class="red">IMPORTANT</span></b></p>
+        <p><span class="yellow-background">Verify the data of the .csv is [n,3] where the first column is an <b>index</b>, the second column consists of the <b>date-time</b> stamps, and the third column are the <b>energy</b> consumption totals for n, 5-minute intervals in Joules.</span></p>
+   
+
+        <div class="card">
+          <table style="width:100% markdown">
+            <tr>
+              <th> </th>
+              <th>Time</th> 
+              <th>Total</th>
+            </tr>
+            <tr>
+              <td>10</td>
+              <td>2021-05-06 11:00:00</td>
+              <td>0</td>
+            </tr>
+            <tr>
+              <td>11</td>
+              <td>2021-05-06 11:05:00</td>
+              <td>733</td>
+            </tr>
+            <tr>
+              <td>12</td>
+              <td>2021-05-06 11:10:00</td>
+              <td>786</td>
+            </tr>
+          </table>
+        </div>
+
+          <div class="card">
+            <table style="width:100% markdown">
+              <tr>
+                <th> </th>
+                <th>Time</th> 
+                <th>Total</th>
+              </tr>
+              <tr>
+                <td>42</td>
+                <td>2021-05-06 13:40:00</td>
+                <td>986</td>
+              </tr>
+              <tr>
+                <td>43</td>
+                <td>2021-05-06 13:45:00</td>
+                <td>721</td>
+              </tr>
+              <tr>
+                <td>44</td>
+                <td>2021-05-06 13:50:00</td>
+                <td>378</td>
+              </tr>
+            </table>
+          </div>
+        <!-- <p>
+          ```
+          Ex: Output]
+                          Time            Total
+          10  2021-05-06 11:00:00            0
+          11  2021-05-06 11:05:00          733
+          12  2021-05-06 11:10:00          786
+                          Time            Total
+          42  2021-05-06 13:40:00          986
+          43  2021-05-06 13:45:00          721
+          44  2021-05-06 13:50:00          378
+          ```
+        <p> -->
+
+        <p>Data types:</p>
+            <ul>
+            <li><span class="yellow-background">Timestamp needs to be an object</span></li>
+            <li><span class="yellow-background">Energy consumption totals need to be int64</span></li>
+            </ul>
+        <p>File is ready to be uploaded into API for Carbon emission evaluation.</p>
+        </ol>
+
+      <h2>Data Retrieval via Response from API Request</h2>
+        <ol type = '1'>
+            <li>Login to Azure via Azure CLI</li>
+        
+        <div class="card">
+          <p class="markdown">>> az login</p>
+        </div>
+      </p>
+        <li>Construct your resource URI</li>
+             <ol type ='a'>
+                <li>  subID: Azure subscription ID</li>
+                <li>resourceGroup: The Azure resource group responsible for the computation</li>
+                <li> providerService: The service provider and description</li>
+                    <ol type ='i'>
+                        <li>ex:Microsoft.MachineLearningServices</li>
+                    </ol>
+            <li>workspace: The location of the computation</li>
+            </ol>
+        
+            <div class="card">
+              <p class="markdown">/subscriptions/{subID}/resourceGroups/{resourceGroup}/providers/{providerService}/workspaces/{workspace}</p>
+            </div>
+        
+        <li>Construct a request URL</li>
+            <ol type ='a'>
+                <li> Time Span needs to be entered as two ISO formatted time stamps with a ‘/’ separator</li>
+                <ol type ='i'>
+                        <li>2021-05-1T19:30:00.000Z/2021-05-1T22:30:00.000Z</li>
+                </ol>
+            </ol>
+        
+        <div class="card">
+        <p class="markdown">https://management.azure.com/{resourceUri}/providers/microsoft.insights/metrics?api-version=2018-01-01&metricnames=GpuEnergyJoules&interval=PT5M&timespan={timespan}&aggregation=total</p>
+        </div>
+
+        <li> Acquire an access token</li>
+            <ol type ='a'>
+                <li>  Use the following CLI command to get your bearer “accessToken”</li>
+                <p class="markdown">>> az account get-access-token --subscription {subID}</p>
+                <li> Then use it to create an API request authorization header</li>
+                <p class="markdown">headers = {'Authorization': 'Bearer {}'.format(accessToken)}</p>
+            </ol>
+        
+
+        <li>Send the data request to Azure Monitor</li>
+        
+        <div class="card">
+          <p class="markdown">requests.get(request_URL, headers=headers)</p>
+         </div>
+
+        <li> Convert the get response string to a dictionary and then save as a .json</li>
+        
+        <div class="card">
+          <p class="markdown">with open("'ML_energy_profile.json", "w") as outfile:</p>
+          <p class="markdown">  &emsp;  json.dump(response_dict, outfile)</p>
+         </div>
+        <br>
+        <p>File is ready to be uploaded into the API for Carbon emission evaluation.</p>
+        <br>
+        </ol>
+        <p>Further Support: <a href="https://docs.microsoft.com/en-us/rest/api/monitor/">Azure Monitor Overview</a> and with <a href="https://docs.microsoft.com/en-us/rest/api/monitor/metricdefinitions/list">Metric Definitions - List</a>
+        
+        </p>
+        <br><br><br>
+        <iframe width="1000" height="600" src="https://www.youtube.com/embed/qUxtOlylvgo" title="Video Tutorial" frameborder="0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+      </div>
+
+      
+    </div>
+
+    <br><br><br><br>
+  </body>
+</html>
+
+
+
+
