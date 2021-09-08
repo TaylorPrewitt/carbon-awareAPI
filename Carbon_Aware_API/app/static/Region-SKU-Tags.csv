@@ -1,0 +1,43 @@
+country,R_Tag_lock,region,sku
+Brazil,,Brazil South,"[""M60""]"
+Canada,Canada,Canada Central,"[""V100"",""MI25""]"
+Canada,Canada,Canada East,0
+United States,US,Central US,0
+United States,US,East US,"[""K80"",""T4"",""P100"",""V100"",""P40"",""M60"",""MI25"",""A100""]"
+United States,US,East US 2,"[""K80"",""T4"",""V100"",""M60"",""MI25""]"
+United States,US,North Central US,"[""K80"",""T4"",""M60"",""MI25""]"
+United States,US,South Central US,"[""K80"",""T4"",""P100"",""V100"",""M60"",""MI25""]"
+United States,US,West Central US,0
+United States,US,West US,"[""T4"",""V100"",""M60""]"
+United States,US,West US 2,"[""K80"",""T4"",""P100"",""V100"",""P40"",""M60"",""MI25"",""A100""]"
+United States,US,West US 3,0
+Germany,EU,Germany West Central,0
+Germany,EU,Germany North,0
+Netherlands,EU,West Europe,"[""K80"",""T4"",""P100"",""V100"",""P40"",""M60"",""MI25"",""A100""]"
+Australia,Australia,Australia Southeast,0
+Australia,Australia,Australia Central,0
+Australia,Australia,Australia East,"[""K80"",""T4"",""V100"",""M60"",""MI25""]"
+Australia,Australia,Australia Central 2,0
+United Kingdom,UK,UK South,"[""K80"",""T4"",""V100"",""M60"",""MI25""]"
+Ireland,EU,North Europe,"[""K80"",""T4"",""V100"",""M60"",""MI25""]"
+France,EU,France Central,"[""V100"",""M60""]"
+France,EU,France South,0
+Norway,EU,Norway East,0
+Norway,EU,Norway West,0
+United Kingdom,,UK West,0
+Switzerland,,Switzerland North,"[""V100"",""M60""]"
+Switzerland,,Switzerland West,0
+Korea,,Korea Central,"[""T4"",""V100"",""MI25""]"
+Japan,,Japan East,"[""T4"",""V100"",""M60"",""MI25""]"
+Korea,,Korea South,0
+Japan,,Japan West,0
+United Arab Emirates,,UAE North,"[""M60""]"
+United Arab Emirates,,UAE Central,0
+India,,Jio India West,0
+India,,West India,0
+India,,Central India,"[""T4"",""V100"",""M60"",""MI25""]"
+India,,South India,0
+Singapore,,Southeast Asia,"[""T4"",""P100"",""V100"",""P40"",""M60"",""MI25""]"
+South Africa,,South Africa West,0
+South Africa,,South Africa North,"[""M60""]"
+China,,East Asia,0

@@ -1,0 +1,268 @@
+<!-- The page with 3 "Find" button boxes. -->
+
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Azure GreenAI Carbon-Intensity API</title>
+  
+  <!-- link in Bootstrap here -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" 
+  integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+
+<script src="https://cdn.bokeh.org/bokeh/release/bokeh-2.3.2.min.js"
+      crossorigin="anonymous"></script>
+<script src="https://cdn.bokeh.org/bokeh/release/bokeh-widgets-2.3.2.min.js"
+      crossorigin="anonymous"></script>
+<script src="https://cdn.bokeh.org/bokeh/release/bokeh-tables-2.3.2.min.js"
+      crossorigin="anonymous"></script>
+  {{ js_resources|indent(4)|safe }}
+  {{ css_resources|indent(4)|safe }}
+  {{ plot_script|indent(4)|safe }}
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Segoe UI";
+}
+
+h1 {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.main_content {
+  margin-top: 50px;
+  margin-left: 175px;
+  margin-right: 175px;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.row1{
+    display:flex;
+    flex-direction:row;
+    justify-content: space-around;
+}
+
+.graph1{
+    display:flex;
+    flex-direction:column;
+    justify-content: space-around;   
+}
+
+.graph2{
+    display:flex;
+    flex-direction:column;
+    justify-content: space-around;
+}
+
+
+.row {
+    justify-content: center;
+}
+
+.content {
+  margin-top: 126px;
+  text-align: center;
+}
+
+.heading {
+  margin-bottom: 60px;
+}
+
+.card {
+    justify-content: center;
+    border-radius: 20px;
+
+}
+
+.title-background {
+    background-color: #007fff;
+    padding: 0.5px;
+}
+
+.findButton {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.description {
+  justify-content: center;
+  text-align: center;
+}
+
+/* Navbar */
+nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #1a1a1f;
+    padding: .75rem;
+    padding-bottom: 10px;
+    z-index: 6;
+}
+
+a {
+  color: #007fff;
+  text-decoration: none;
+}
+
+.navLink {
+    color: white;
+    text-decoration: none;
+    padding: .8rem;
+    vertical-align: middle;
+    margin-bottom: 1rem;
+}
+
+a:hover {
+  color: gray;
+}
+
+ul {
+    margin: 0;
+    padding: 0;
+    padding-top: .5rem;
+    display: inline-block;
+}
+
+li {
+  margin-bottom: 1rem;
+  margin-left: 1rem;
+}
+
+.logo {
+  padding-left: 1em;
+  padding-right: 1em;
+  height: 40px;
+  vertical-align: middle;
+  margin-bottom: 18px;
+}
+
+.logo:hover {
+  transform: scale(1.07);
+}
+
+ul.horizontal-list {
+  min-width: 696px;
+  list-style: none;
+}
+ul.horizontal-list li {
+  display: inline;
+  padding-bottom: 0.8rem;
+}
+
+/* End of Navbar */
+
+</style>
+<body>
+  <div>
+    <nav>
+      <ul class="horizontal-list">
+        <li class="navLink"><a class="navLink" href=https://azure.microsoft.com/en-us><img class="logo" src="https://upload.wikimedia.org/wikipedia/commons/a/a8/Microsoft_Azure_Logo.svg"></img></a></li>
+        <li><a class="navLink" href=/. >Home</a></li>
+        <li><a class="navLink" href=/protected >Calculate Resource Emissions</a></li>
+        <li><a class="navLink" href=/pred_shift_find >Time/Region Shifting</a></li>
+        <li><a class="navLink" href=/ci_data >Get Carbon Intensity Data</a></li>
+        <li><a class="navLink" href=/all_index>Explore Global Carbon Intensity</a></li>
+        <li><a class="navLink" href=/docs_page>Documentation</a></li>
+      </ul>
+    </nav>
+  </div>
+
+  <header class="jumbotron jumbotron-fluid text-white title-background">
+      <div class="content">
+        <h1 class="heading">Carbon Emissions at Azure Regions</h1>
+      </div>
+  </header>
+
+    <div class="main_content mt-5">
+        <h4 class="text-center">Marginal Emissions for Azure Regions Located in WattTime Balancing Authorities</h4>
+    </div>
+
+    <div class=row1>
+      <div class="graph1 ml-4">
+        {{ plot_div|indent(4)|safe }}
+      </div>
+      <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+      <div class="graph2">
+        <script>
+          var graphs = {{plot1 | safe}}
+        </script>
+      </div>
+    </div>
+    <div class="main_content mt-3">
+      <p class="text-center">The above details Marginal Operating Emissions Rates (MOER: <span><sup>lbs</sup>&frasl;<sub>MWh</sub></span>) of carbon for each Azure region that is supported by a WattTime balancing authority.  Above is an interactive table to organize observations, as well as a GeoScatter plot illustrating the real-time MOER at each Azure region. The 'Emission Percent' value in the GeoScatter represents how the current marginal emssions rate proportionally compares to the last 14 days in that region.  This value is on the range of [0, 100] with 100 being the maximum MOER value the region has experienced over the previous 14 days.</p>
+   </div>
+    
+    <br><br>
+
+        <!-- Card 2 -->
+        <center><div class="col-md-6 col-xl-4 d-flex">
+          <div class="card mb-3">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-sm">
+                  <h2 class="card-title">Azure Regions</h2>
+                  <form method="POST" action="/overview">
+                    <label for="data">Details of a specific Azure region's WattTime balancing authority:</label>
+                
+                        <select class="form-control" name="data" id="data">
+                         <option value="nada">  </option>
+                         <option value="PJM Roanoke">East US</option>
+                         <option value="PJM DC">East US 2</option>
+                         <option value="PJM DC">East US 2 EUAP</option>
+                         <option value="ERCOT San Antonio">South Central US</option>
+                         <option value="PUD No 2 of Grant County">West US 2</option>
+                         <option value="National Electricity Market (Australia)">Australia Central</option>
+                         <option value="National Electricity Market (Australia)">Australia Central 2</option>
+                         <option value="National Electricity Market (Australia)">Australia East</option>
+                         <option value="National Electricity Market (Australia)">Australia Southeast</option>
+                         <option value="Ireland">North Europe</option>
+                         <option value="United Kingdom">UK South</option>
+                         <option value="Netherlands">West Europe</option>
+                         <option value="MISO Madison City">Central US EUAP</option>
+                         <option value="MISO Madison City">Central US</option>
+                         <option value="PJM Chicago">North Central US</option>
+                         <option value="California ISO Northern">West US</option>
+                         <option value="Independent Electricity System Operator (Ontario)">Canada Central</option>
+                         <option value="France">France South</option>
+                         <option value="France">France Central</option>
+                         <option value="Hydro Quebec">Canada East</option>
+                         <option value="Germany and Luxembourg">Germany West Central</option>
+                         <option value="Germany and Luxembourg">Germany North</option>
+                         <option value="PacifiCorp East">West Central US</option>
+                         <option value="Arizona Public Service Co">West US 3</option>
+                         <option value="Norway">Norway West</option>
+                         <option value="Norway">Norway East</option>
+              
+                         <input class="findButton btn-success btn" type = "submit" value="See Region Emission History">
+                        </select>
+                      </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </center>
+
+
+
+    <!-- Add blank space -->
+    <div class="pt-5">
+        <br>
+        </div>
+        <div class="pt-5">
+        <br>
+        </div>
+</body>
+</html>

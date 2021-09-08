@@ -1,0 +1,346 @@
+sp<!DOCTYPE html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Azure GreenAI Carbon-Intensity API</title>
+<style>
+* {
+  box-sizing: border-box;
+  font-family: 'Segoe UI';
+}
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI';
+}
+
+.logo2 {
+
+  height: 20px;
+  vertical-align: middle;
+  margin-bottom: 7px;
+}
+
+.content {
+  margin-top: 150px;
+  margin-left: 350px;
+  margin-right: 350px;
+}
+
+.red { color: #aa1c1c; }
+.yellow-background { background-color: rgb(247, 247, 165); }​
+
+
+.card {
+    justify-content: center;
+    border: 2px solid  #1a1a1f;
+    border-radius: 20px;
+    display:inline-block;
+    margin-left: 3rem;
+    margin-bottom: 1rem;
+}
+
+/* Navbar */
+nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #1a1a1f;
+    padding: .75rem;
+    padding-bottom: 10px;
+    z-index: 6;
+}
+
+a {
+  color: #007fff;
+  text-decoration: none;
+}
+
+.navLink {
+    color: white;
+    text-decoration: none;
+    padding: .8rem;
+    vertical-align: middle;
+    margin-bottom: 1rem;
+}
+
+a:hover {
+  color: gray;
+}
+
+ul {
+    margin: 0;
+    padding: 0;
+    padding-top: .5rem;
+    display: inline-block;
+}
+
+li {
+  margin-bottom: 1rem;
+  margin-left: 1rem;
+}
+
+.logo {
+  padding-left: 1em;
+  padding-right: 1em;
+  height: 40px;
+  vertical-align: middle;
+  margin-bottom: 18px;
+}
+
+.logo:hover {
+  transform: scale(1.07);
+}
+
+ul.horizontal-list {
+  min-width: 696px;
+  list-style: none;
+}
+ul.horizontal-list li {
+  display: inline;
+  padding-bottom: 0.8rem;
+}
+
+/* End of Navbar */
+
+/* Python stuff */
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300&display=swap');
+
+.python {
+    justify-content: center;
+    border: 2px solid  #1a1a1f;
+    border-radius: 20px;
+    display:inline-block;
+    margin-left: 2rem;
+    margin-bottom: 2rem;
+    background-color: rgb(32, 32, 32);
+    color: white;
+    padding-left: 2.5rem;
+    padding-right: 2.5rem;
+    font-family: 'Fira Code', monospace;
+}
+
+.white {
+  font-family: 'Fira Code', monospace;
+}
+
+.pink {
+  color: pink;
+  font-family: 'Fira Code', monospace;
+}
+
+.green {
+  color: green;
+  font-family: 'Fira Code', monospace;
+}
+
+.orange {
+  color: orange;
+  font-family: 'Fira Code', monospace;
+}
+
+.yellow {
+  color: yellow;
+  font-family: 'Fira Code', monospace;  
+}
+
+.light-green {
+  color: lightgreen;
+  font-family: 'Fira Code', monospace;
+}
+
+.blue {
+  color: rgb(35, 105, 235);
+  font-family: 'Fira Code', monospace;
+}
+
+.l-blue {
+  color: rgb(109, 216, 252);
+  font-family: 'Fira Code', monospace;
+}
+
+</style>
+<body>
+  <div>
+    <nav>
+      <ul class="horizontal-list">
+        <li class="navLink"><a class="navLink" href=https://azure.microsoft.com/en-us><img class="logo" src="https://upload.wikimedia.org/wikipedia/commons/a/a8/Microsoft_Azure_Logo.svg"></img></a></li>
+        <li><a class="navLink" href=/. >Home</a></li>
+        <li><a class="navLink" href=/protected >Calculate Resource Emissions</a></li>
+        <li><a class="navLink" href=/pred_shift_find >Time/Region Shifting</a></li>
+        <li><a class="navLink" href=/ci_data >Get Carbon Intensity Data</a></li>
+        <li><a class="navLink" href=/all_index>Explore Global Carbon Intensity</a></li>
+        <li><a class="navLink" href=/docs_page>Documentation</a></li>
+      </ul>
+    </nav>
+  </div>
+
+
+
+    <div class="content">
+      <div class="body">
+
+        
+        <h1>Retrieving Data from Azure Monitor</h1>
+        <h2>Direct Monitor Download Through Azure Portal</h2>
+
+        <h4>Getting to the Azure Monitor</h4>
+        <ol type = '1'>
+            <li>Click the <img class="logo2" src="https://upload.wikimedia.org/wikipedia/commons/a/a8/Microsoft_Azure_Logo.svg"></img> Logo at the top right of the screen or independently navigate to: <a href="https://azure.microsoft.com/en-us/">https://azure.microsoft.com/en-us/</a></li>
+            <li>  Login to your Portal</li>
+            <li>  In the “Azure services” selection menu, choose “Monitor” </li>
+            <li> In the navigation menu on the left, choose “Metrics”</li>
+                <ol type ='a'>
+                <li> If this menu is not available, click the >> icon under “Monitor|Overview”</li>
+                </ol>
+            </ol>
+        <h4>Finding your resource</h4>
+        <ol>
+            <li>Create scope:</li>
+                
+                <li> Select the <i>resource group</i> associated to the ML runs</li>
+                <li>Refine scope:</li>
+                    <ol type ='i'>
+                        <li>Select a esource typer, ex: “Machine Learning”</li>
+                        <li>Select the location of the Azure region the workspace is associated to: ex “East US 2”</li>
+                        <li>Select the resource: ex “ML_Workspace_Name”</li>
+                        <li>Apply selections</li>
+                    </ol>
+                </ol>
+          <h4>Aggregate GPU Energy Data</h4>
+          <ol>
+            <li>Define Scope:</li>
+                <ol type ='a'>
+                <li> Select the metric “GpuEnergyJoules”</li>
+                <li> Select the aggregation “Sum”</li>
+                </ol>
+            <li>Change granularity:</li>
+                <ol type ='a'>
+                <li> Click icon at the top right of the plot region that displays granularity information</li>
+                    <ol type ='i'>
+                        <li>By default, this is set to: “Local Time: Last 24 hours (Automatic)”</li>
+                    </ol>
+                <li>In the Time granularity dropdown, select “5 minutes”</li>
+                <li>In the Time range selection, select “Custom”</li>
+                     <ol type ='i'>
+                        <li>Enter Start and End times for run</li>
+                        
+                    </ol>
+                <li>Apply changes</li>
+                </ol>
+              </ol>
+          <h4>Download the Data </h4>
+          <ol>
+            <li>In the “Share” dropdown, select download to excel file to get a .xlsx</li>
+
+ 
+        <p>File is ready to be uploaded into API for Carbon emission evaluation.</p>
+        </ol>
+<br><br><br>
+      <h2>Data Retrieval via Response from API Request</h2>
+        <ol type = '1'>
+            <li>Login to Azure via Azure CLI</li>
+        
+        <!-- Command Line -->
+        <div class="python">
+          <p class="white">>> az login</p>
+        </div>
+      </p>
+        <li>Construct your resource URI</li>
+             <ol type ='a'>
+                <li>  subID: Azure subscription ID</li>
+                <li>resourceGroup: The Azure resource group responsible for the computation</li>
+                <li> providerService: The service provider and description</li>
+                    <ol type ='i'>
+                        <li>ex:Microsoft.MachineLearningServices</li>
+                    </ol>
+            <li>workspace: The location of the computation</li>
+            </ol>
+        
+            <!-- Misc. -->
+            <div class="python">
+              <p class="white">/subscriptions/{subID}/resourceGroups/{resourceGroup}/providers/{providerService}/workspaces/{workspace}</p>
+            </div>
+        
+        <li>Construct a request URL</li>
+            <ol type ='a'>
+                <li> Time Span needs to be entered as two ISO formatted time stamps with a ‘/’ separator</li>
+                <ol type ='i'>
+                        <li>2021-05-1T19:30:00.000Z/2021-05-1T22:30:00.000Z</li>
+                </ol>
+            </ol>
+        
+        <!-- Misc. -->
+        <div class="python">
+        <p class="white">https://management.azure.com/{resourceUri}/providers/microsoft.insights/metrics?api-version=2018-01-01&metricnames=GpuEnergyJoules&interval=PT5M&amp;timespan={timespan}&aggregation=total</p>
+        </div>
+
+        <li> Acquire an access token</li>
+            <ol type ='a'>
+                <li>  Use the following CLI command to get your bearer “accessToken”</li>
+                <!-- Command Line -->
+                <div class="python">
+                  <p class="white">>> az account get-access-token --subscription {subID}</p>
+                </div>
+                <li> Then use it to create an API request authorization header</li>
+                <!-- Python -->
+                <div class="python">
+                  <p class="white">headers = {<span class="orange">'Authorization'</span>: <span class="orange">'Bearer</span><span class="blue"> {}</span><span class="orange">'</span>.format(accessToken)}</p>
+                </div>
+            </ol>
+        
+
+        <li>Send the data request to Azure Monitor</li>
+        
+        <!-- Python -->
+        <div class="python">
+          <p class="white">requests.get(request_URL, <span class="l-blue">headers</span>=headers)</p>
+         </div>
+
+        <li> Convert the get response string to a dictionary and then save as a .json</li>
+        
+        <!-- Python -->
+        <div class="python">
+          <p class="white"><span class="pink">with</span> <span class="yellow">open</span>(<span class="orange">"'ML_energy_profile.json"</span>, <span class="orange">"w"</span>) <span class="pink">as</span> outfile:</p>
+          <p class="white">  &emsp;&emsp;&emsp;&emsp;  json.dump(response_dict, outfile)</p>
+         </div>
+        <br>
+        <p>File is ready to be uploaded into the API for Carbon emission evaluation.</p>
+        <br>
+        </ol>
+        <p>Further Support: <a href="https://docs.microsoft.com/en-us/rest/api/monitor/">Azure Monitor Overview</a> and with <a href="https://docs.microsoft.com/en-us/rest/api/monitor/metricdefinitions/list">Metric Definitions - List</a>
+        
+        </p>
+        <br><br><br>
+       
+        <!-- Add blank space -->
+        <div class="pt-5">
+          <br>
+        </div>
+
+        <div class="pt-5">
+            <br>
+        </div>
+
+        
+        <!-- Add blank space -->
+        <div class="pt-5">
+          <br>
+        </div>
+
+        <div class="pt-5">
+            <br>
+        </div>
+        
+        
+
+      </div>
+
+      
+    </div>
+
+    <br>
+  </body>
+</html>
+

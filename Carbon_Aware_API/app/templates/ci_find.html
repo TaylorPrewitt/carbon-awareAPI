@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Azure GreenAI Carbon-Intensity API</title>
+
+<!-- link in Bootstrap here -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" 
+integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+<style>
+  * {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Segoe UI";
+}
+
+.content {
+  margin-top: 150px;
+  text-align: center;
+}
+
+.heading {
+  margin-bottom: 60px;
+}
+
+.findButton {
+  margin-top: 20px;
+}
+
+.card_desc {
+  margin-left: 10px;
+  list-style: none;
+}
+
+.findButton {
+    text-align: center;
+    margin-top: 5px;
+}
+
+/* Navbar */
+nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #1a1a1f;
+    padding: .75rem;
+    padding-bottom: 10px;
+    z-index: 6;
+}
+
+a {
+  color: #007fff;
+  text-decoration: none;
+}
+
+.navLink {
+    color: white;
+    text-decoration: none;
+    padding: .8rem;
+    vertical-align: middle;
+    margin-bottom: 1rem;
+}
+
+a:hover {
+  color: gray;
+}
+
+ul {
+    margin: 0;
+    padding: 0;
+    padding-top: .5rem;
+    display: inline-block;
+}
+
+li {
+  margin-bottom: 1rem;
+  margin-left: 1rem;
+}
+
+.logo {
+  padding-left: 1em;
+  padding-right: 1em;
+  height: 40px;
+  vertical-align: middle;
+  margin-bottom: 18px;
+}
+
+.logo:hover {
+  transform: scale(1.07);
+}
+
+ul.horizontal-list {
+	min-width: 696px;
+	list-style: none;
+}
+ul.horizontal-list li {
+	display: inline;
+  padding-bottom: 0.8rem;
+}
+
+/* End of Navbar */
+
+.top {
+  justify-content: center;
+}
+
+div.card {
+  justify-content: center;
+  width: 95%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+div.container {
+  justify-content: center;
+  margin-left: auto;
+  margin-right: auto;
+  width: 62em
+}
+
+.steps {
+  color: green;
+}
+
+.title-background {
+    padding: 0.5px;
+}
+
+</style>
+
+<body>
+    <header  class="jumbotron jumbotron-fluid text-white bg-dark title-background">
+      <div class="content">
+        <h1 class="heading">Choose a Carbon Intensity Output Scope</h1>
+      </div>
+    </header>
+
+  <main>
+    <div>
+      <nav>
+        <ul class="horizontal-list">
+          <li class="navLink"><a class="navLink" href=https://azure.microsoft.com/en-us><img class="logo" src="https://upload.wikimedia.org/wikipedia/commons/a/a8/Microsoft_Azure_Logo.svg"></img></a></li>
+          <li><a class="navLink" href=/. >Home</a></li>
+          <li><a class="navLink" href=/protected >Calculate Resource Emissions</a></li>
+          <li><a class="navLink" href=/pred_shift_find >Time/Region Shifting</a></li>
+          <li><a class="navLink" href=/ci_data >Get Carbon Intensity Data</a></li>
+          <li><a class="navLink" href=/all_index>Explore Global Carbon Intensity</a></li>
+          <li><a class="navLink" href=/docs_page>Documentation</a></li>
+        </ul>
+      </nav>
+    </div>
+
+    <div class="container">
+      <div class="d-flex">
+        <div class="card mb-3 mt-4">
+          <div class="card-body">
+            <div class="horizontal-list top">
+                <h2 class="card-title">Carbon Intensity:</h2>
+                <p class="mt-5"><strong>Grid Data:</strong> Obtain historical marginal emissions for a given area. Omitting the starttime and endtime parameters will return generated data updates for the region.
+
+                <p><strong>Historical Data: </strong>Obtain a zip file containing the MOER values and timestamps for a given region for (up to) the past two years.  Historical data will be updated on the 2nd of each month at midnight UTC for the previous month. </p>
+                <p class="mt-1">
+                  <strong>Real-Time Data:</strong> Provides a real-time signal indicating the carbon intensity on the local grid in that moment (typically updated every 5 minutes). The current emissions rate of the grid is returned as a raw Marginal Operating Emissions Rate (MOER)
+              </p>
+              <p>
+                  <strong>Forecast Data:</strong> Obtain Margial Operating Emission Rate forecasts for a given region. Omitting the starttime and endtime parameters will return recently generated forecast for a given region.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <form method="POST" action="/chooser"  enctype="multipart/form-data">
+        <div id="stpe_one" class="mt-5">
+          <span class="steps"><strong>Step One:</strong></span>
+          <label class="mt-4"><b>Pick an Azure Region or WattTime Balancing Authority</b></label>
+          <br>
+          <label for="data_az" class="mt-4">Azure Region:</label>
+          <select name="data_az" id="data_az">
+            <option value="nada"> </option>
+            <option value="West US">West US</option>
+            <option value="West US 2">West US 2</option>
+            <option value="West Central US">West Central US</option>
+            <option value="East US">East US</option>
+            <option value="North Central US">North Central US</option>
+            <option value="East US 2">East US 2</option>
+            <option value="East US 2 EUAP">East US 2 EUAP</option>
+            <option value="South Central US">South Central US</option>
+            <option value="Central US EUAP">Central US EUAP</option>
+            <option value="Central US">Central US</option>
+            <option value="Germany West Central">Germany West Central</option>
+            <option value="Germany North">Germany North</option>
+            <option value="Canada Central">Canada Central</option>
+            <option value="West Europe">West Europe</option>
+            <option value="Australia Southeast">Australia Southeast</option>
+            <option value="Australia Central">Australia Central</option>
+            <option value="Australia East">Australia East</option>
+            <option value="Australia Central 2">Australia Central 2</option>
+            <option value="UK South">UK South</option>
+            <option value="North Europe">North Europe</option>
+            <option value="France Central">France Central</option>
+            <option value="France South">France South</option>
+            <option value="West US 3">West US 3</option>
+            <option value="Norway East">Norway East</option>
+            <option value="Norway West">Norway West</option>
+            <option value="UK West">UK West</option>
+            <option value="Switzerland North">Switzerland North</option>
+            <option value="Canada East">Canada East</option>
+            <option value="Switzerland West">Switzerland West</option>
+            <option value="Korea Central">Korea Central</option>
+            <option value="Japan East">Japan East</option>
+            <option value="Korea South">Korea South</option>
+            <option value="Japan West">Japan West</option>
+            <option value="UAE North">UAE North</option>
+            <option value="UAE Central">UAE Central</option>
+            <option value="JIO India West">JIO India West</option>
+            <option value="East Asia">East Asia</option>
+            <option value="West India">West India</option>
+            <option value="Central India">Central India</option>
+            <option value="South India">South India</option>
+            <option value="Southeast Asia">Southeast Asia</option>
+            <option value="South Africa West">South Africa West</option>
+            <option value="South Africa North">South Africa North</option>
+            <option value="Brazil South">Brazil South</option>
+            <option value="Brazil Southeast">Brazil Southeast</option>
+          </select>&emsp;&emsp;&emsp;
+
+          <span><strong>or</strong></span>
+
+          <label for="data_ba" class="mt-2 ml-5">Balancing Authority:</label>
+          <select name="data_ba" id="data_ba">
+              <option value="nada">  </option>
+              <option value="PJM Roanoke">PJM Roanoke</option>
+              <option value="PJM DC">PJM DC</option>
+              <option value="ERCOT San Antonio">ERCOT San Antonio</option>
+              <option value="PUD No 2 of Grant County">PUD No 2 of Grant County</option>
+              <option value="National Electricity Market (Australia)">National Electricity Market (Australia)</option>
+              <option value="Ireland">Ireland</option>
+              <option value="United Kingdom">United Kingdom</option>
+              <option value="Netherlands">Netherlands</option>
+              <option value="MISO Madison City">MISO Madison City</option>
+              <option value="PJM Chicago">PJM Chicago</option>
+              <option value="California ISO Northern">California ISO Northern</option>
+              <option value="Independent Electricity System Operator (Ontario)">Independent Electricity System Operator (Ontario)</option>
+              <option value="France">France</option>
+              <option value="Hydro Quebec">Hydro Quebec</option>
+              <option value="Germany and Luxembourg">Germany and Luxembourg</option>
+              <option value="PacifiCorp East">PacifiCorp East</option>
+              <option value="Arizona Public Service Co">Arizona Public Service Co</option>
+          </select>
+        </div>
+        
+        <div class="text-center">
+          <button type="button" class="btn btn-primary mt-5 mb-2 text-center" id="step_one_btn" onclick="show_step_2()">Next</button>
+        </div>
+
+          <br>
+
+        <!-- Function to show step 2 -->
+        <script>
+          function show_step_2() {
+              var content = document.getElementById('step_two');
+              if (content.style.display == 'none') {
+                content.style.display = 'block';
+              } 
+
+              var button = document.getElementById('step_one_btn');
+              if (button.style.display == 'none') {
+                button.style.display = 'block';
+              } else {
+                button.style.display = 'none';
+              }
+          }
+        </script>
+
+        <br>
+
+        <div class="mt-1" id="step_two" style="display:none">
+          <hr size="8" width="100%" color="#d3d3d3" align="left"> 
+          <span class="steps"><strong>Step Two:</strong></span>
+          <label class="mt-4"><b>Select an Output and Type</b> (see above descriptions)</label>
+          <br>
+
+          <label for="data" class="mt-4">Carbon Intensity Output:</label>
+          <select name="data" id="data">
+            <option value="nada">  </option>
+            <option value="grid">Grid Data</option>
+            <option value="historical">Historical Data Zipfile</option>
+            <option value="index">Real-Time Data</option>
+            <option value="forecast">Forecast Data</option>
+          </select>
+          <br><br>
+
+          <div class="text-center">
+            <button type="button" class="btn btn-primary mt-5 mb-5" id="step_two_btn" onclick="show_step_3()">Next</button>
+          </div>
+        </div>
+
+        <!-- Function to show step 3 -->
+        <script>
+          function show_step_3() {
+              var content = document.getElementById('step_three');
+              if (content.style.display == 'none') {
+                content.style.display = 'block';
+              } 
+
+              var button = document.getElementById('step_two_btn');
+              if (button.style.display == 'none') {
+                button.style.display = 'block';
+              } else {
+                button.style.display = 'none';
+              }
+          }
+        </script>
+
+        <div class="mt-5" id="step_three" style="display:none">
+          <hr size="8" width="100%" color="#d3d3d3" align="left"> 
+          <span class="steps"><strong>Step Three:</strong></span>
+          <label class="mt-4"><b>Enter WattTime User Information:</b> </label>
+          
+          <div class="form-group row mt-3 ml-1">
+            <div>
+              <label for="data" class="form-label">Username:</label>
+              <input type="text" class="form-control" name = "user_name">
+            </div>&emsp;&emsp;&emsp;
+            <div>
+              <label for="data" class="form=label">Password:</label>
+              
+              <!-- The type is password -->
+              <input type="password" class="form-control" id="password_input" name="pass_word">
+            </div>
+          </div>
+
+          <input class="mt-3" type="checkbox" onclick="myFunction()"> Show Password
+          <br>
+          
+
+
+          <div class="text-center mt-1">
+            <button type="button" class="btn btn-primary mt-5 mb-5" id="step_three_btn" onclick="show_step_4()">Next</button>
+          </div>
+        </div>
+
+        <!-- Script to show/hide password input -->
+        <script>
+          function myFunction() {
+            var x = document.getElementById("password_input");
+            if (x.type === "password") {
+              x.type = "text";
+            } else {
+              x.type = "password";
+            }
+          }
+        </script>
+
+
+        <!-- Function to show step 4 -->
+        <script>
+          function show_step_4() {
+              var content = document.getElementById('step_four');
+              if (content.style.display == 'none') {
+                content.style.display = 'block';
+              } 
+
+              var button = document.getElementById('step_three_btn');
+              if (button.style.display == 'none') {
+                button.style.display = 'block';
+              } else {
+                button.style.display = 'none';
+              }
+          }
+        </script>
+
+        <div class="mt-5" id="step_four" style="display:none">
+          <hr size="8" width="100%" color="#d3d3d3" align="left"> 
+          <span class="steps"><strong>Step Four:</strong></span>
+          <label class="mt-4"><b>Enter a Time Window:</b> (Optional input for grid data and forecast data)</label>
+          <p>Example: 7/16/2021 5:30:00 PM PST</p>
+          <div class="form-group row mt-4 ml-1">
+            <div>
+              <label for="data" class="form-label">Start Time:</label>
+              <input type="text" class="form-control" name = "starttime">
+            </div>&emsp;&emsp;&emsp;
+            <div>
+              <label for="data" class="form=label">End Time:</label>
+              
+              <input type="text" class="form-control" name="endtime">
+            </div>
+          </div>
+    
+          <div class="text-center mt-5">
+            <input class="findButton btn-success btn" type = "submit" value="Query carbon intensity data" class="mb-5 mt-3">
+          </div>
+        </div>
+      </form>
+    </div>
+    
+
+    
+    <br><br><br><br>
+
+
+
+      </div>
+
+    </div>
+  </main>
+  <br><br><br>
+</div>
+</body>
+</html>
