@@ -84,6 +84,7 @@ Where:
 
 * **t** = discrete time vector<br>
 * M(t) = marginal operating emission rate (MOER) for a given region (i) at a certain point in time (j)<br>
+* E(t) = energy consumed per time interval
 * C<sub><i>i</i></sub> = carbon emitted for a given region and time window (C<sub><i>0</i></sub> is the result from the M(t) for when and where the run was executed)
 * **C** = vector of carbon emissions resultant of different initial conditions for M(t) <br>
 
