@@ -21,8 +21,8 @@ Other definitions for the Carbon Awareness found at: <br>
 
 <br><br>
 
-<img width="1035" alt="mountain" src="https://user-images.githubusercontent.com/80305894/132602354-e0c41d0e-1a83-4fd8-a435-ba2332694d10.png">
 
+![Banner](https://user-images.githubusercontent.com/80305894/132620015-b0a5007a-d605-43ca-a260-8b3bc5206b32.png)
 <br>
 <a name="Carbon Aware API"></a>
 
@@ -113,7 +113,9 @@ For each permitted data center all possible windows in the forecast span are sea
 * Complete Shifting: data center and start time variation. Sliding search to find best start time for the green window across all permitted data centers. 
 
 For complete and geographic shifting, permitted data centers can be filtered based on regional data governance laws or which GPU SKU's are available. 
+
 <br>
+
 <a name="Tool Validation"></a>
 
 ## Tool Validation
@@ -123,6 +125,7 @@ For complete and geographic shifting, permitted data centers can be filtered bas
 #### Results
 
 <br>
+
 <a name="Case Studies"></a>
 
 ## Case Studies
@@ -147,6 +150,7 @@ Results:
 
 
 <br>
+
 <a name="Tool Recommendations"></a>
 
 ## Recommendations
