@@ -3,12 +3,12 @@
 
 <a href="#Carbon Aware API">Overview</a><br>
 <a href="#Tool Architecture">Architecture</a><br>
-<a href="#Tool Methodology">Methodology</a><br>
-<a href="#Tool Validation">Validation</a><br>
+<a href="#Tool Methodology">Tool Methodology</a><br>
+<a href="#Tool Validation">Tool Validation</a><br>
 <a href="#Case Studies">Case Studies</a><br>
 <a href="#Tool Recommendations">Recommendations</a><br>
 
-### Terminology 
+## Terminology 
 | Term | Definition   |
 | :------------- | :---------- | 
 | **Carbon Intensity** | Carbon per energy unit. |
@@ -19,11 +19,14 @@
 Other definitions for the Carbon Awareness found at: <br>
 <a href = "https://github.com/Green-Software-Foundation/Dictionary/blob/dev/Dictionary/Dictionary.md">Green Software Foundation Dictionary</a>
 
+<br><br>
+
+<img width="1035" alt="mountain" src="https://user-images.githubusercontent.com/80305894/132602354-e0c41d0e-1a83-4fd8-a435-ba2332694d10.png">
 
 <br>
 <a name="Carbon Aware API"></a>
 
-### Carbon Aware API
+## Carbon Aware API
 
 To enable organizations to make smart decisions about their environmental impact and carbon footprint, we have created the Carbon Aware API to minimize the carbon emissions of computational workflows. A few key features of the API are: 
 
@@ -51,16 +54,40 @@ To enable organizations to make smart decisions about their environmental impact
 <br>
 <a name="Tool Architecture"></a>
 
-### Architecture
+## Architecture
+
+*Diagram*
+<br>
+<sup>Diagram Images Coming Soon</sup>
+
+[wsgi.py](https://github.com/TaylorPrewitt/carbon-awareAPI/blob/main/Carbon_Aware_API/wsgi.py)<br>
+[utils.py](https://github.com/TaylorPrewitt/carbon-awareAPI/blob/main/Carbon_Aware_API/app/utils.py)<br>
+[data.py](https://github.com/TaylorPrewitt/carbon-awareAPI/blob/main/Carbon_Aware_API/app/data.py)<br>
+[ci_data.py](https://github.com/TaylorPrewitt/carbon-awareAPI/blob/main/Carbon_Aware_API/app/routes/ci_data.py)<br>
+[shift.py](https://github.com/TaylorPrewitt/carbon-awareAPI/blob/main/Carbon_Aware_API/app/routes/shift.py)<br>
+
 
 
 <br>
 <a name="Tool Methodology"></a>
 
-### Methodology
+## Tool Methodology
 
 **Retrospective Analysis**: By mapping grid-based marginal carbon intensity measurements to energy consumption profiles, the carbon footprint of cloud workloads is identified and evaluated.  Part of this evaluation is to find carbon counterfactual emissions of if carbon aware scheduling was used, reporting possible outcomes of temporal and geographic shifts.  
 
+
+Given the following:
+<br>
+<img src="https://latex.codecogs.com/png.image?\dpi{100}&space;\bg_white&space;C_i&space;=&space;&space;\sum_{j=0}^{\left\|&space;\textbf{t}\right\|}&space;M_i(t_j)*E(t_j)&space;" title="\bg_white C_i = \sum_{j=0}^{\left\| \textbf{t}\right\|} M_i(t_j)*E(t_j) " />
+
+Where:
+
+* **t** = discrete time vector<br>
+* M(t) = marginal operating emission rate (MOER) for a given region (i) at a certain point in time (j)<br>
+* C<sub><i>i</i></sub> = carbon emitted for a given region and time window (C<sub><i>0</i></sub> is the result from the M(t) for when and where the run was executed)
+* **C** = vector of carbon emissions resultant of different initial conditions for M(t) <br>
+
+Using **C** the carbon couterfactuals can be identified because each value is the outcome of a different potential workload shift.    
 
 **Demand Shifting**: Combining carbon intensity forecasts from a certified provider with anticipated workload constraints such as runtime, governance, and needed hardware, a green window can be found in the forecasted time span. 
 
@@ -71,7 +98,7 @@ Given the following:
 Where:
 
 * **t** = discrete time vector<br>
-* F(t) = marginal operating emission forecast for a given region (i) at a certain point in time (j)<br>
+* F(t) = forecasted marginal operating emission rate (MOER) for a given region (i) at a certain point in time (j)<br>
 * <span style="text-decoration:overline">CI</span><sub><i>i</i></sub> = mean forecasted carbon intensity for a given region and time window 
 * **<span style="text-decoration:overline">CI</span>** = vector of mean forecasted carbon intensities  <br>
 
@@ -88,16 +115,37 @@ For complete and geographic shifting, permitted data centers can be filtered bas
 <br>
 <a name="Tool Validation"></a>
 
-### Validation
+## Tool Validation
 
+#### Methodolgy 
+
+#### Results
 
 <br>
 <a name="Case Studies"></a>
 
-### Case Studies
+## Case Studies
+
+#### Demand Shifting at Scale of Organizational Operations 
+
+Details:
+
+Results:
+
+#### Demand Shifting at Scale of Individual Users 
+
+Details:
+
+Results:
+
+#### Bulk Workload Shifting for Data Centers
+
+Details:
+
+Results:
 
 
 <br>
 <a name="Tool Recommendations"></a>
 
-### Recommendations
+## Recommendations
