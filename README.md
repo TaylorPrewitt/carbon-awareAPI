@@ -1,12 +1,16 @@
 # Carbon Aware API Project
 <sup>*Draft, In Progress*</sup>
 
-<a href="#Carbon Aware API">Overview</a><br>
-<a href="#Tool Architecture">Architecture</a><br>
-<a href="#Tool Methodology">Tool Methodology</a><br>
-<a href="#Tool Validation">Tool Validation</a><br>
-<a href="#Case Studies">Case Studies</a><br>
-<a href="#Tool Recommendations">Recommendations</a><br>
+
+## Sections
+<ol>
+  <li><a href="#Carbon Aware API">Overview</a></li>
+  <li><a href="#Tool Architecture">Architecture</a></li>
+  <li><a href="#Tool Methodology">Tool Methodology</a></li>
+  <li><a href="#Tool Validation">Tool Validation</a></li>
+  <li><a href="#Case Studies">Case Studies</a></li>
+  <li><a href="#Tool Recommendations">Recommendations</a></li>
+</ol>
 
 ## Terminology 
 | Term | Definition   |
@@ -120,9 +124,9 @@ For complete and geographic shifting, permitted data centers can be filtered bas
 
 ## Tool Validation
 
-#### Methodolgy 
+Methodolgy 
 
-#### Results
+Results
 
 <br>
 
@@ -132,19 +136,19 @@ For complete and geographic shifting, permitted data centers can be filtered bas
 
 #### Demand Shifting at Scale of Organizational Operations 
 
-Details:
+Details: *Geographic shifting compute instances at scale would reduce carbon by X% over the month*
 
 Results:
 
 #### Demand Shifting at Scale of Individual Users 
 
-Details:
+Details: *Individual users can reduce carbon by Y via time shifting.*
 
 Results:
 
 #### Bulk Workload Shifting for Data Centers
 
-Details:
+Details: *Shifting 1% of a data centers workload over a day would reduce overall emissions by Z.*
 
 Results:
 
