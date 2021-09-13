@@ -60,15 +60,15 @@ To enable organizations to make smart decisions about their environmental impact
 
 ## Architecture
 
-*Diagram*
-<br>
-<sup>Diagram Images Coming Soon</sup>
+![Slide1](https://user-images.githubusercontent.com/80305894/133138401-b520a104-be79-43fe-86d0-8cc8e32e801f.jpg)
 
-[wsgi.py](https://github.com/TaylorPrewitt/carbon-awareAPI/blob/main/Carbon_Aware_API/wsgi.py)<br>
-[utils.py](https://github.com/TaylorPrewitt/carbon-awareAPI/blob/main/Carbon_Aware_API/app/utils.py)<br>
-[data.py](https://github.com/TaylorPrewitt/carbon-awareAPI/blob/main/Carbon_Aware_API/app/data.py)<br>
-[ci_data.py](https://github.com/TaylorPrewitt/carbon-awareAPI/blob/main/Carbon_Aware_API/app/routes/ci_data.py)<br>
-[shift.py](https://github.com/TaylorPrewitt/carbon-awareAPI/blob/main/Carbon_Aware_API/app/routes/shift.py)<br>
+![Slide2](https://user-images.githubusercontent.com/80305894/133138404-7fb91783-8bcd-4ae4-a52f-aaae3eda954a.jpg)
+
+![Slide3](https://user-images.githubusercontent.com/80305894/133138405-820c00aa-d154-46fa-862b-40478315f393.jpg)
+
+![Slide4](https://user-images.githubusercontent.com/80305894/133138409-a922dfd8-50ac-40f4-961a-ac9081ac3408.jpg)
+
+
 
 
 
