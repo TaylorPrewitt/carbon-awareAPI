@@ -1,6 +1,7 @@
-# Carbon Aware API Project
-<sup>*Draft, In Progress*</sup>
 
+
+# Carbon Aware API
+<sup>*Draft, Project In Progress*</sup>
 
 ## Sections
 <ol>
@@ -54,21 +55,51 @@ To enable organizations to make smart decisions about their environmental impact
 
 **Regional Carbon Intensity:** Provides the carbon intensity for each data center supported by a WattTime- tracked balancing authority.  The possible scopes are historic intensities (time series for prior 24-hours, week, and month), real-time marginal intensity, and forecast (mean intensity for upcoming user- defined window). 
 
-
-<br>
 <a name="Tool Architecture"></a>
+
 
 ## Architecture
 
 ![Slide1](https://user-images.githubusercontent.com/80305894/133138401-b520a104-be79-43fe-86d0-8cc8e32e801f.jpg)
 
+Links:
+<ul>
+  <li><a href = "https://github.com/TaylorPrewitt/carbon-awareAPI/tree/main/Carbon_Aware_API">Carbon Aware API</a></li>
+</ul>
+
+
 ![Slide2](https://user-images.githubusercontent.com/80305894/133138404-7fb91783-8bcd-4ae4-a52f-aaae3eda954a.jpg)
 
+Links:
+
+<ul>
+  <li><a href = "https://github.com/TaylorPrewitt/carbon-awareAPI/blob/main/Carbon_Aware_API/wsgi.py">app.py</a></li>
+  <li><a href = "https://github.com/TaylorPrewitt/carbon-awareAPI/tree/main/Carbon_Aware_API/app">Application</a></li>
+</ul>
+
+
+
 ![Slide3](https://user-images.githubusercontent.com/80305894/133138405-820c00aa-d154-46fa-862b-40478315f393.jpg)
+Links:
+<ul>
+  <li><a href = "https://github.com/TaylorPrewitt/carbon-awareAPI/blob/main/Carbon_Aware_API/app/utils.py">util.py</a></li>
+  <li><a href = "https://github.com/TaylorPrewitt/carbon-awareAPI/tree/main/Carbon_Aware_API/app/services">Services</a></li>
+  <li><a href = "https://github.com/TaylorPrewitt/carbon-awareAPI/tree/main/Carbon_Aware_API/app/routes">Routes</a></li>
+</ul>
+
 
 ![Slide4](https://user-images.githubusercontent.com/80305894/133138409-a922dfd8-50ac-40f4-961a-ac9081ac3408.jpg)
+Links:
+<ul>
+  <li><a href = "https://github.com/TaylorPrewitt/carbon-awareAPI/blob/main/Carbon_Aware_API/app/routes/ci_data.py">pathway.py</a></li>
+  <li><a href = "https://github.com/TaylorPrewitt/carbon-awareAPI/blob/main/Carbon_Aware_API/app/routes/ci_data.py">ci_data.py</a></li>
+  <li><a href = "https://github.com/TaylorPrewitt/carbon-awareAPI/blob/main/Carbon_Aware_API/app/routes/shift.py">shift.py</a></li>
+</ul>
 
 
+
+
+<br>
 
 
 
