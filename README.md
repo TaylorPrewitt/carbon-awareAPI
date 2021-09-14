@@ -1,5 +1,4 @@
 
-
 # Carbon Aware API
 <sup>*Draft, Project In Progress*</sup>
 
@@ -28,7 +27,7 @@ Other definitions for the Carbon Awareness found at: <br>
 
 
 ![Banner](https://user-images.githubusercontent.com/80305894/132620015-b0a5007a-d605-43ca-a260-8b3bc5206b32.png)
-<br>
+<br><br>
 <a name="Carbon Aware API"></a>
 
 ## Carbon Aware API
@@ -55,55 +54,40 @@ To enable organizations to make smart decisions about their environmental impact
 
 **Regional Carbon Intensity:** Provides the carbon intensity for each data center supported by a WattTime- tracked balancing authority.  The possible scopes are historic intensities (time series for prior 24-hours, week, and month), real-time marginal intensity, and forecast (mean intensity for upcoming user- defined window). 
 
-<a name="Tool Architecture"></a>
+<br>
 
+<a name="Tool Architecture"></a>
 
 ## Architecture
 
-![Slide1](https://user-images.githubusercontent.com/80305894/133138401-b520a104-be79-43fe-86d0-8cc8e32e801f.jpg)
-
-Links:
-<ul>
-  <li><a href = "https://github.com/TaylorPrewitt/carbon-awareAPI/tree/main/Carbon_Aware_API">Carbon Aware API</a></li>
-</ul>
+![Slide1](https://user-images.githubusercontent.com/80305894/133294097-c1275ba6-f423-45e3-a241-964fd54a90c9.jpg)
+<a href = "https://github.com/TaylorPrewitt/carbon-awareAPI/tree/main/Carbon_Aware_API">Carbon Aware API</a>
+<br><br>
 
 
-![Slide2](https://user-images.githubusercontent.com/80305894/133138404-7fb91783-8bcd-4ae4-a52f-aaae3eda954a.jpg)
+![Slide2](https://user-images.githubusercontent.com/80305894/133294086-9f3be05f-4da9-4bb8-8722-5a5f21454117.jpg)
+<a href = "https://github.com/TaylorPrewitt/carbon-awareAPI/blob/main/Carbon_Aware_API/wsgi.py">wsgi.py</a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<a href = "https://github.com/TaylorPrewitt/carbon-awareAPI/tree/main/Carbon_Aware_API/app">app</a>
+<br><br>
 
-Links:
+![Slide3](https://user-images.githubusercontent.com/80305894/133294091-a53a1bc3-58e7-4507-a7d3-4ccb77658db0.jpg)
+<a href = "https://github.com/TaylorPrewitt/carbon-awareAPI/blob/main/Carbon_Aware_API/app/utils.py">utils.py</a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<a href = "https://github.com/TaylorPrewitt/carbon-awareAPI/tree/main/Carbon_Aware_API/app/services">services</a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<a href = "https://github.com/TaylorPrewitt/carbon-awareAPI/tree/main/Carbon_Aware_API/app/routes">routes</a>
+<br><br>
 
-<ul>
-  <li><a href = "https://github.com/TaylorPrewitt/carbon-awareAPI/blob/main/Carbon_Aware_API/wsgi.py">app.py</a></li>
-  <li><a href = "https://github.com/TaylorPrewitt/carbon-awareAPI/tree/main/Carbon_Aware_API/app">Application</a></li>
-</ul>
-
-
-
-![Slide3](https://user-images.githubusercontent.com/80305894/133138405-820c00aa-d154-46fa-862b-40478315f393.jpg)
-Links:
-<ul>
-  <li><a href = "https://github.com/TaylorPrewitt/carbon-awareAPI/blob/main/Carbon_Aware_API/app/utils.py">util.py</a></li>
-  <li><a href = "https://github.com/TaylorPrewitt/carbon-awareAPI/tree/main/Carbon_Aware_API/app/services">Services</a></li>
-  <li><a href = "https://github.com/TaylorPrewitt/carbon-awareAPI/tree/main/Carbon_Aware_API/app/routes">Routes</a></li>
-</ul>
-
-
-![Slide4](https://user-images.githubusercontent.com/80305894/133138409-a922dfd8-50ac-40f4-961a-ac9081ac3408.jpg)
-Links:
-<ul>
-  <li><a href = "https://github.com/TaylorPrewitt/carbon-awareAPI/blob/main/Carbon_Aware_API/app/routes/ci_data.py">pathway.py</a></li>
-  <li><a href = "https://github.com/TaylorPrewitt/carbon-awareAPI/blob/main/Carbon_Aware_API/app/routes/ci_data.py">ci_data.py</a></li>
-  <li><a href = "https://github.com/TaylorPrewitt/carbon-awareAPI/blob/main/Carbon_Aware_API/app/routes/shift.py">shift.py</a></li>
-</ul>
+![Slide4](https://user-images.githubusercontent.com/80305894/133294095-63bf88db-5fec-4ef4-bbbf-d536f8be3097.jpg)
+<a href = "https://github.com/TaylorPrewitt/carbon-awareAPI/blob/main/Carbon_Aware_API/app/routes/ci_data.py">pathway.py</a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<a href = "https://github.com/TaylorPrewitt/carbon-awareAPI/blob/main/Carbon_Aware_API/app/routes/ci_data.py">ci_data.py</a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<a href = "https://github.com/TaylorPrewitt/carbon-awareAPI/blob/main/Carbon_Aware_API/app/routes/shift.py">shift.py</a>
+<br><br>
 
 
-
-
-<br>
-
-
-
-<br>
 <a name="Tool Methodology"></a>
 
 ## Tool Methodology
