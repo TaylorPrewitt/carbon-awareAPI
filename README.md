@@ -85,7 +85,7 @@ To enable organizations to make smart decisions about their environmental impact
 <br><br>
 
 
-![Slide4](https://user-images.githubusercontent.com/80305894/133732792-b897e384-f8ca-4c3e-bad2-64f73a7793f9.jpg)
+![Slide4](https://user-images.githubusercontent.com/80305894/133736223-e47cbe41-d5e5-4ab0-9aea-ad829763f1a9.jpg)
 <a href = "https://github.com/TaylorPrewitt/carbon-awareAPI/blob/main/Carbon_Aware_API/app/routes/ci_data.py">ci_data.py</a>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <a href = "https://github.com/TaylorPrewitt/carbon-awareAPI/blob/main/Carbon_Aware_API/app/routes/shift.py">shift.py</a>
