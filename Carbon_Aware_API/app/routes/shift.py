@@ -27,6 +27,16 @@ def get_avg_moer(region_name, starting_time, deltaminutes=60):
         return -1
     return sum(valid_moer_vals) / len(valid_moer_vals)
 
+# 1. Real-time carbon info for BA - from the /get_index_api
+# @app.route('/get_index_data', methods=["GET"])
+def get_realtime_data(ba):
+    token = get_token()
+    index_url  = 'https://api2.watttime.org/index'
+    headers = {'Authorization': 'Bearer {}'.format(token)}
+    params = {'ba': ba}
+    rsp = requests.get(index_url, headers=headers, params=params)
+    return rsp.json()
+
 def geo_shifting(window_size):
 
     #if not region_name:
@@ -103,6 +113,19 @@ def Gpu_filter(SKU_data_table_filtered,desired_GPU):
     
     return GPU_Regions
 
+# round to closest 5 min
+def roundTime(dtt=None, roundTo=5*60):
+    if dtt == None : 
+        dtt = datetime.datetime.now()
+        seconds = (dtt.replace(tzinfo=None) - dtt.min).seconds
+        rounding = (seconds+roundTo/2) // roundTo * roundTo
+        return dtt + datetime.timedelta(0,rounding-seconds,-dtt.microsecond)
+    else:
+        dtt = dt.fromisoformat(dtt)
+        seconds = (dtt.replace(tzinfo=None) - dtt.min).seconds
+        rounding = (seconds+roundTo/2) // roundTo * roundTo
+        return dtt + datetime.timedelta(0,rounding-seconds,-dtt.microsecond)
+
 def get_mean_window_time(some_dict, start_time, window_size):
     """
     the start_time is appended to the end of the list, so we can calculate its datetime format
@@ -124,18 +147,19 @@ def get_mean_window_time(some_dict, start_time, window_size):
         year, month, day = [int(ymd) for ymd in match.group(1).split("-")] #ymd = year month date
         hour, minute, second = [int(hms) for hms in match.group(2).split(":")]
         point_times.append(datetime.datetime(year, month, day, hour, minute, second))
-
     delta_minutes = int(window_size)
-    start_time = point_times.pop() # Removes last element of the list which is the starting time to look out for and saves
+    start_time = point_times[0] # Removes last element of the list which is the starting time to look out for and saves
     end_time = start_time + datetime.timedelta(minutes=delta_minutes)
     print(f"No shift start time: {start_time}. Its end time: {end_time}")
     moer_vals = [] # Holds MOER values that fit within start_time and start_time + delta_minutes
-    for index, moer in enumerate(moers):
+    for point_time, moer in zip(point_times, moers):
         # If the current window of time being examined goes past the last point time, break. 
-        if end_time > point_times[-1]: 
+        #print(point_time)
+        if point_time > end_time:
             break
-        current_time = point_times[index]
-        if current_time >= start_time and current_time <= end_time:
+        
+        if point_time >= start_time and point_time <= end_time:
+            #print(point_time)
             moer_vals.append(moer)
     average_moer = sum(moer_vals) / len(moer_vals)
     return average_moer
@@ -214,7 +238,8 @@ def find_forecast_window_min(some_dict, start_index, end_index, window_size):
     print(f"Current starting time with window size of {window_size} minutes is {point_times[min_index]} UTC")
     print(f"The average MOER value during this time window is {min_moer_mean}")
     print(f"Minimum index is {min_index}")
-    print(f"Here is a list of the point_times in that window for confirmation:\n {min_moer_vals}")
+    print(f"Here is a list of the moer vals in that window for confirmation:\n {min_moer_vals}")
+    #print(f"Here is the list of point times for this region: {point_times}")
     # Time format: 2021-07-23T21:30:00+00:00
     """
     print("NEW VALUES")
@@ -240,6 +265,23 @@ def find_forecast_window_min(some_dict, start_index, end_index, window_size):
     return min_window_dict
     #return forecast_dict[min_index]
 
+# Returns az region given input
+def ba_region_helper(region_ba, dc_location):
+    # get helper data using balancing authority or 
+    try:
+        data = from_ba_helper(region_ba)
+        print(f"data clue of (region_ba) = {data}")
+
+    except:
+        try:
+            data = getloc_helper(dc_location)
+            print(f"data clue of (region_az) = {data}")
+        except:
+            return None
+    az_region = data['AZ_Region']
+    return az_region
+    
+
 def recent_region_data():
     '''
     same as amulet_test except this returns all 3 of the data entries instead of
@@ -252,6 +294,124 @@ def recent_region_data():
     data_for_table = json.load(open(data_path,))
     
     return data_for_table
+
+@shift_bp.route('/geotime_shift', methods=["GET"])
+def geotime_shift(current_region=None):
+    #update_all_regions_forecast_data() # FOR TESTING. Remove in production
+    if not os.path.isfile("./local_files/all_regions_forecasts.json"): # If file doesn't exist, run the update function to generate the cached file first then open this same file. 
+        print("All Region forecast data exists... Using existing cache.")
+        update_all_regions_forecast_data()
+    with open("./local_files/all_regions_forecasts.json", "r") as file_in:
+        all_regions_forecasts = json.loads(json.load(file_in)) # Read in as string json. doing a second json.loads deserializes into json/dict object. 
+    
+    """
+    What datetime.datetime.now() does: Will grab the local machine time. Mine is in Pacific Time which is 7 hours behind UTC... 
+    But the Watt-time api returns times in UTC. 
+    So... We grab the local time as in UTC, however this sets the tzinfo abstract class within the datetime.datetime. 
+    The datetime library does not let you compare naive objects (datetime objects without tzinfo set) and aware objects (datetime objects
+    with tzinfo set). So... we grab the time in UTC, then essentially set the tzinfo to None to be able to compare later. 
+    """
+    current_time = datetime.datetime.now(tz=datetime.timezone.utc).replace(tzinfo=None)
+    # TODO: Do a check if current_region is valid or not. Get from request.form.get otherwise.
+    # Then check if this value is valid or not. 
+    
+    #current_region = request.form.get("data_az")
+    SKU_table = get_SKU_table()
+    sensitive_check_box = request.form.get('sensitive', 'off') # Change this to request.form.get with HTML page added on
+    desired_GPU = request.form.get("gpu_type", "nada") # Change this to request.form.get with HTML page added on
+    filter_list = Law_filter(SKU_table, sensitive_check_box, current_region)
+    try:
+        filtered_regions_list = Gpu_filter(filter_list, desired_GPU)
+    except KeyError:
+        msg = 'verify chosen resource GPU. This GPU is unavailable in current workspace location'
+        return make_response(render_template('data_error.html', msg=msg), 404)
+
+    print('/n =============================')
+    print('made it past the error handle')
+
+    print(f"Based on GPU and Law filtering, geo and time-shifting over these regions:\n{filtered_regions_list}")
+    # Grabbing window size and converting to minutes. 
+    
+    # TODO: Get window size input more efficiently. E.g. have users input values themselves. 
+
+    window_minutes = request.form.get("window_size_minutes", default=0)
+    window_hours = request.form.get("window_size_hours", default=0)
+    
+
+    try:
+        window_hours = int(window_hours)
+    except ValueError:
+        window_hours = 0
+
+    try:
+        window_minutes = int(window_minutes)
+    except ValueError:
+        window_minutes = 0
+    
+    deltaminutes = window_minutes + (60 * window_hours)
+    # If the window size is less than 30 minutes, set it to a minimum value of 30 minutes. 
+    if deltaminutes < 30: deltaminutes = 30
+    print(f"Querying with the following, CURRENT_AZ_REGION of {current_region}, CURRENT_TIME of {current_time}, WINDOW_SIZE of {deltaminutes} minutes")
+    # These variables keep track of which region had the minimum average MOER value for the given window size as well as that given value. 
+    minimum_region, minimum_avg_moer, greenest_starttime = None, float("inf"), datetime.datetime.now()
+    current_region_moers = [] # Variables to keep track of current region's average moer for the given window. 
+    for az_region, time_moer in all_regions_forecasts.items():
+        print("==========================================================")
+        displayName = all_regions_forecasts[az_region]['displayName']
+        print(az_region, displayName)
+        if displayName not in filtered_regions_list:
+            print(f"Region: {displayName} not in filtered list for LAW and GPU. Skipping\n")
+            continue
+        print(f"Display name of current region: {displayName}")
+        print(f"Region in filtered list?: {displayName in filtered_regions_list}")
+        print()
+        point_times, moer_vals = time_moer['point_times'], time_moer['values']
+        print(f"Region being searched: {az_region}, Current Region Selected: {current_region}")
+        if current_region == displayName: # find average window value for current region given the current time
+            for moer, point_time in zip(moer_vals, point_times):
+                point_time = datetime.datetime.fromisoformat(point_time)
+                if point_time > current_time + datetime.timedelta(minutes=deltaminutes):
+                    break
+                if point_time >= current_time and point_time <= current_time + datetime.timedelta(minutes=deltaminutes):
+                    current_region_moers.append(moer)
+
+        for index, time in enumerate(point_times):
+            current_moer_vals = [] # keep track of the current window
+            start_time = datetime.datetime.fromisoformat(point_times[index]) # convert datetime string format to datetime object for comparison
+            end_time = start_time + datetime.timedelta(minutes=deltaminutes)
+
+            # If the ending time is greater than the last point_time, we are not getting a full window size. 
+            if end_time > datetime.datetime.fromisoformat(point_times[-1]):
+                break
+
+            for moer, point_time in zip(moer_vals[index:], point_times[index:]):
+                point_time = datetime.datetime.fromisoformat(point_time) # string datetime --> datetime object
+                if point_time > end_time: break
+                current_moer_vals.append(moer)
+
+            average_moer = sum(current_moer_vals) / len(current_moer_vals)
+
+            if average_moer < minimum_avg_moer: 
+                minimum_region, minimum_avg_moer = az_region, average_moer
+                greenest_starttime = time
+    
+    current_region_avg = sum(current_region_moers) / len(current_region_moers)
+    print(current_region_avg)
+    print(minimum_avg_moer)
+    perc_diff = ((current_region_avg - minimum_avg_moer) / current_region_avg) * 100
+    ba = all_regions_forecasts[minimum_region]['ba']
+    return_dict = {
+        'current_region' : current_region,
+        'current_region_avg' : current_region_avg,
+        'current_starttime' : current_time.isoformat(),
+        'greenest_region' : NAME_TO_DISPLAY[minimum_region], 'greenest_starttime' : greenest_starttime,
+        'greenest_region_BA' : ba,
+        'minimum_avg_moer' : minimum_avg_moer, 'percentage_decrease' : round(perc_diff, 2), 
+        'window_size_in_minutes': deltaminutes
+    }
+    #print(return_dict)
+    return return_dict # Need to return as normal dictionary. Don't use jsonify(). It'll return as a response object. 
+
 
 @shift_bp.route('/get_current_min_region', methods=["GET"])
 def get_current_min_region(filtered_regions_list,current_region):
@@ -279,15 +439,15 @@ def shift_predictions():
     
     
     
-    shift_type = request.args.get('data_shifter', None)
+    shift_type = request.form.get('data_shifter', None)
     print(f"GET shift_type = {shift_type}")
 
-    if shift_type != None:
+    if shift_type:
         print('shift_choice is not equal to none')
         print(shift_type)
-        dc_location = request.args.get('data_az', None)
-        dc_balancing_authority = request.args.get('data_ba', None)
-        if dc_balancing_authority != None:
+        dc_location = request.form.get('data_az', None)
+        dc_balancing_authority = request.form.get('data_ba', None)
+        if dc_balancing_authority != 'nada':
             dc_location = dc_balancing_authority
             print(f"now dc_location is the balancing authority {dc_balancing_authority}")
         else:
@@ -301,7 +461,7 @@ def shift_predictions():
             print("starting form route")
             shift_type = request.form['data_shifter']
             # determine if AZ or BA was input
-            print(shift_type)
+            print(f"Shift type selected: {shift_type}")
             dc_location = request.form.get('data_az', None)
             print(f"dc_location is {dc_location}")
             dc_balancing_authority = request.form.get('data_ba', None)
@@ -340,10 +500,21 @@ def shift_predictions():
         # determine if AZ or BA was input
 
         WT_names = WT_names.reset_index()
-        print(WT_names)
+        #print(f"WT_names: {WT_names}")
         print(f"tring to call from df {WT_names['name'][1]}")
-
+        #wt_list = WT_names.name.tolist()
+        #for w in wt_list:
+        #    if w == dc_location: print(w)
+        #print(dc_location)
         # find what name matches:abbrev pair
+        if dc_location in WT_names.name.tolist():
+            region_ba = dc_location
+            print(f"region_ba is {dc_location}")
+            print(f"input = {dc_location}")
+            az_region = ba_region_helper(region_ba, dc_location)
+        else:
+            az_region = ba_region_helper(None, dc_location)
+        """
         for l in range(len(WT_names)):
             if WT_names['name'][l] == dc_location:
                 region_ba = dc_location
@@ -351,28 +522,13 @@ def shift_predictions():
                 print(f"found match at {l}")
                 print(f"input = {dc_location}")
                 print(f"match = {WT_names['name'][l]}")
+        """
         
-
-        # get helper data using balancing authority or 
-        try:
-            data = from_ba_helper(region_ba)
-            print(f"data clue of (region_ba) = {data}")
-    
-        except:
-            try:
-                data = getloc_helper(dc_location)
-                print(f"data clue of (region_az) = {data}")
-            except:
-                msg = 'please try a different search.'
-                return make_response(render_template('pred_error.html', msg=msg), 400 )
-
-        
-        az_region = data['AZ_Region']
         print(az_region)
         az_coords = get_az()
 
         try:
-            geo_time_shift_data = geotime_shift()
+            geo_time_shift_data = geotime_shift(current_region=az_region)
         except ZeroDivisionError:
             try:
                 
@@ -425,6 +581,13 @@ def shift_predictions():
         
         # find what name matches:abbrev pair
         try:
+            if dc_location in WT_names.name.tolist():
+                print(f"region_ba is {dc_location}")
+                print(f"found match at {l}")
+                print(f"input = {dc_location}")
+                print(f"match = {WT_names['name'][l]}")
+                print('using dc_location')
+            """
             for l in range(len(WT_names)):
                 if WT_names['name'][l] == dc_location:
                     region_ba = dc_location
@@ -433,6 +596,7 @@ def shift_predictions():
                     print(f"input = {dc_location}")
                     print(f"match = {WT_names['name'][l]}")
                     print('using dc_location')
+            """    
         except:
             for l in range(len(WT_names)):
                 if WT_names['name'][l] == ba:
@@ -588,11 +752,18 @@ def shift_predictions():
 
 
     elif shift_type == 'Time Shift Only':
-        WT_names = WT_names
         print('step 2.time')
 
        # find what name matches:abbrev pair
         try:
+            if dc_location in WT_names.name.tolist():
+                region_ba = dc_location
+                print(f"region_ba is {dc_location}")
+                print(f"found match at {l}")
+                print(f"input = {dc_location}")
+                print(f"match = {WT_names['name'][l]}")
+                print('using dc_location')
+            """
             for l in range(len(WT_names)):
                 if WT_names['name'][l] == dc_location:
                     region_ba = dc_location
@@ -601,6 +772,8 @@ def shift_predictions():
                     print(f"input = {dc_location}")
                     print(f"match = {WT_names['name'][l]}")
                     print('using dc_location')
+            """
+            
         except:
             for l in range(len(WT_names)):
                 if WT_names['name'][l] == ba:
@@ -619,7 +792,7 @@ def shift_predictions():
             data = from_ba_helper(region_ba)
             print(f"data clue of (region_ba) = {data}")
 
-        except:
+        except: 
             print('found exception')
             try:
                 data = getloc_helper(dc_location)
@@ -674,8 +847,18 @@ def shift_predictions():
             return make_response(render_template('pred_error.html' , msg=msg), 404 ) 
             
 
+        start = request.form.get('starttime', None)
+        if not start:
+            start = datetime.datetime.now()
+        starttime = start.isoformat()
+        print(f"Start time: {starttime}")
+        end = request.form.get('endtime', None)
+        if not end:
+            end = start + datetime.timedelta(hours=24)
+        endtime = end.isoformat()
+        print(f"End time: {endtime}")
 
-
+        """
         # get start and end times for window, empty defaults: start=now end=now+24hours
         start = request.form.get('starttime', None)
         if start != None:
@@ -694,7 +877,7 @@ def shift_predictions():
         end = request.form.get('endtime', None)
         if end != None:
             if len(end) == 0:
-                end = str(datetime.datetime.now() + datetime.timedelta(hours=24))
+                end = str(end + datetime.timedelta(hours=24))
             end = end.upper()
         else: 
             end = end = str(datetime.datetime.now() + datetime.timedelta(hours=24))
@@ -706,6 +889,7 @@ def shift_predictions():
         except:
             msg = 'verify correct format of query times'
             return make_response(render_template('pred_error.html', msg=msg), 400 ) 
+        """
         
         #window_size = request.form['window_size']
         window_size_hours, window_size_minutes = (request.form['window_size_hours']), (request.form['window_size_minutes'])
@@ -852,7 +1036,8 @@ def shift_predictions():
         page_data['shiftAZ'] = new_region['AZ_Region']
         page_data['no_shift'] = rt_in_reg
         page_data['inputBA'] = data['abbrev']
-        page_data['shiftBA'] = list(WattTime_abbrevs.keys())[list(WattTime_abbrevs.values()).index(new_region['name'])]
+        #page_data['shiftBA'] = list(WattTime_abbrevs.keys())[list(WattTime_abbrevs.values()).index(new_region['name'])]
+        page_data['shiftBA'] = new_region['name']
         page_data['shiftTime'] = pred_best_shift['point_time']
         page_data['no_shiftTime'] = rt_in_reg['point_time']
         page_data['shiftMOER'] = pred_best_shift['value']

@@ -12,8 +12,7 @@ static_bp = Blueprint('static_bp', __name__)
 
 @static_bp.route("/home")
 def home():
-    print(1)
-    #return "This is an example"
+
     return render_template('start.html')
 
 @static_bp.route("/")
@@ -55,3 +54,4 @@ def api_use():
 @static_bp.route('/other')
 def other():
     return render_template('miro.html')
+
