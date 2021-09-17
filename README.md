@@ -60,28 +60,32 @@ To enable organizations to make smart decisions about their environmental impact
 
 ## Architecture
 
-![Slide1](https://user-images.githubusercontent.com/80305894/133294097-c1275ba6-f423-45e3-a241-964fd54a90c9.jpg)
+
+
+![Slide1](https://user-images.githubusercontent.com/80305894/133732784-a3cf30d2-577d-4efd-81e0-c5cc4211fc1c.jpg)
 <a href = "https://github.com/TaylorPrewitt/carbon-awareAPI/tree/main/Carbon_Aware_API">Carbon Aware API</a>
 <br><br>
 
 
-![Slide2](https://user-images.githubusercontent.com/80305894/133294086-9f3be05f-4da9-4bb8-8722-5a5f21454117.jpg)
+![Slide2](https://user-images.githubusercontent.com/80305894/133732786-353f6794-32ca-4049-a2ed-b0103005efb2.jpg)
 <a href = "https://github.com/TaylorPrewitt/carbon-awareAPI/blob/main/Carbon_Aware_API/wsgi.py">wsgi.py</a>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <a href = "https://github.com/TaylorPrewitt/carbon-awareAPI/tree/main/Carbon_Aware_API/app">app</a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <br><br>
 
-![Slide3](https://user-images.githubusercontent.com/80305894/133294091-a53a1bc3-58e7-4507-a7d3-4ccb77658db0.jpg)
+![Slide3](https://user-images.githubusercontent.com/80305894/133735224-0cc694e5-61fd-4d47-8df6-2213ca32a4c3.jpg)
 <a href = "https://github.com/TaylorPrewitt/carbon-awareAPI/blob/main/Carbon_Aware_API/app/utils.py">utils.py</a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<a href = "https://github.com/TaylorPrewitt/carbon-awareAPI/blob/main/Carbon_Aware_API/app/data.py">data.py</a>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <a href = "https://github.com/TaylorPrewitt/carbon-awareAPI/tree/main/Carbon_Aware_API/app/services">services</a>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <a href = "https://github.com/TaylorPrewitt/carbon-awareAPI/tree/main/Carbon_Aware_API/app/routes">routes</a>
 <br><br>
 
-![Slide4](https://user-images.githubusercontent.com/80305894/133294095-63bf88db-5fec-4ef4-bbbf-d536f8be3097.jpg)
-<a href = "https://github.com/TaylorPrewitt/carbon-awareAPI/blob/main/Carbon_Aware_API/app/routes/ci_data.py">pathway.py</a>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+![Slide4](https://user-images.githubusercontent.com/80305894/133732792-b897e384-f8ca-4c3e-bad2-64f73a7793f9.jpg)
 <a href = "https://github.com/TaylorPrewitt/carbon-awareAPI/blob/main/Carbon_Aware_API/app/routes/ci_data.py">ci_data.py</a>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <a href = "https://github.com/TaylorPrewitt/carbon-awareAPI/blob/main/Carbon_Aware_API/app/routes/shift.py">shift.py</a>
@@ -97,12 +101,13 @@ To enable organizations to make smart decisions about their environmental impact
 
 Given the following:
 <br>
-<img src="https://latex.codecogs.com/png.image?\dpi{100}&space;\bg_white&space;C_i&space;=&space;&space;\sum_{j=0}^{\left\|&space;\textbf{t}\right\|}&space;M_i(t_j)*E(t_j)&space;" title="\bg_white C_i = \sum_{j=0}^{\left\| \textbf{t}\right\|} M_i(t_j)*E(t_j) " />
+
+![CodeCogsEqn (1)](https://user-images.githubusercontent.com/80305894/133733435-c8532304-3a4a-4140-9dbd-cc449758f423.png)
 
 Where:
 
 * **t** = discrete time vector<br>
-* M(t) = marginal operating emission rate (MOER) for a given region (i) at a certain point in time (j)<br>
+* M(t) = marginal operating emission rate (MOER) for a given region (i) at a certain point in time (j) for J number of timestampes.<br>
 * E(t) = energy consumed per time interval
 * C<sub><i>i</i></sub> = carbon emitted for a given region and time window (C<sub><i>0</i></sub> is the result from the M(t) for when and where the run was executed)
 * **C** = vector of carbon emissions resultant of different initial conditions for M(t) <br>
@@ -113,16 +118,19 @@ Using **C** the carbon couterfactuals can be identified because each value is th
 
 Given the following:
 <br>
-<img src="https://latex.codecogs.com/png.image?\dpi{100}&space;\bg_white&space;CI_i&space;=&space;\frac{1}{\left\|&space;\textbf{t}\right\|}&space;\sum_{j=0}^{\left\|&space;\textbf{t}\right\|}&space;F_i(t_j)&space;" title="\bg_white CI_i = \frac{1}{\left\| \textbf{t}\right\|} \sum_{j=0}^{\left\| \textbf{t}\right\|} F_i(t_j) " />
+
+![CodeCogsEqn (2)](https://user-images.githubusercontent.com/80305894/133733627-aeffbdce-4714-4b31-97aa-247123332acd.png)
 
 Where:
 
 * **t** = discrete time vector<br>
-* F(t) = forecasted marginal operating emission rate (MOER) for a given region (i) at a certain point in time (j)<br>
+* F(t) = forecasted marginal operating emission rate (MOER) for a given region (i) at a certain point in time (j) for J number of timestampes.<br>
 * <span style="text-decoration:overline">CI</span><sub><i>i</i></sub> = mean forecasted carbon intensity for a given region and time window 
 * **<span style="text-decoration:overline">CI</span>** = vector of mean forecasted carbon intensities  <br>
 
-<img src="https://latex.codecogs.com/png.image?\dpi{110}&space;\bg_white&space;G&space;=&space;argmin(\textbf{CI})" title="\bg_white G = argmin(\textbf{CI})" />
+Followed by:
+<br><br>
+![CodeCogsEqn (3)](https://user-images.githubusercontent.com/80305894/133733779-a7e25132-613c-4788-ac1a-c7ce2fa4f2f0.png)
 
 The green suggestion (G) is the time period in the forcast span at a specific data center that yields the minimum mean forecasted carbon intensity. The goal of the Carbon Aware API is to find which start time (t<sub>0</sub>) and/or location that would result in the least carbon to be emitted.  
 
@@ -138,6 +146,14 @@ For complete and geographic shifting, permitted data centers can be filtered bas
 <a name="Tool Validation"></a>
 
 ## Tool Validation
+
+#### Data Granularity
+
+Methodolgy 
+
+Results
+
+#### Predictive Accuracy
 
 Methodolgy 
 
