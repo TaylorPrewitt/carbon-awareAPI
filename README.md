@@ -188,7 +188,7 @@ For the purpose of demand shifting, the effectiveness of using a carbon intensit
 
 <br>
 
-For more information, please see: [Tool Validation]("")
+For more information, please see: [Tool Validation](https://github.com/TaylorPrewitt/carbon-awareAPI/tree/main/Documentation/Validation)
 
 <br>
 
@@ -204,7 +204,7 @@ Carbon intensity data for case studies provided by: [WattTime](https://www.wattt
 
 **Results:** *Analysis in-progress*
 
-For more information, please see: [Demand Shifting at Scale of Organizational Operations]("")
+For more information, please see the full case study: [Demand Shifting at Scale of Organizational Operations](https://github.com/TaylorPrewitt/carbon-awareAPI/tree/main/Documentation/Case%20Studies/Organizational_Shifting)
 
 ### Demand Shifting at Scale of Individual Users 
 
@@ -212,7 +212,7 @@ For more information, please see: [Demand Shifting at Scale of Organizational Op
 
 **Results:** *Analysis in-progress*
 
-For more information, please see: [Demand Shifting at Scale of Individual Users]("")
+For more information, please see the full case study: [Demand Shifting at Scale of Individual Users](https://github.com/TaylorPrewitt/carbon-awareAPI/tree/main/Documentation/Case%20Studies/Individual_Shifting)
 
 ### Bulk Workload Shifting for Data Centers
 
@@ -222,7 +222,7 @@ For more information, please see: [Demand Shifting at Scale of Individual Users]
 
 
 
-For more information, please see: [Bulk Workload Shifting for Data Centers]("")
+For more information, please see the full case study: [Bulk Workload Shifting for Data Centers](https://github.com/TaylorPrewitt/carbon-awareAPI/tree/main/Documentation/Case%20Studies/DataCenter_Shifting)
 
 <br>
 
