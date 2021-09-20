@@ -15,10 +15,12 @@
 ## Terminology 
 | Term | Definition   |
 | :------------- | :---------- | 
-| **Carbon Intensity** | Carbon per energy unit. |
-| **Grid-based carbon intensity**   | All entities who operate on a shared electrical grid share a common emissions rate. | 
-| **Carbon delta**   | The difference in emissions between carbon aware and unaware actions. | 
+| **Carbon Intensity** | Carbon emitted per energy unit. |
+| **Grid-based carbon intensity**   | All entities who operate on a shared electrical grid, share a common emission rate. | 
+| **Carbon Aware** | 	Adjusted behavior in response to the *carbon intensity* of consumption.|
+| **Carbon delta**   | The difference in emissions between *carbon aware* and unaware actions. | 
 | **Carbon counterfactual**   | The *carbon delta* had the carbon aware action been different.| 
+| **Demand Shifting**   | Selectively changing the time/location of a compute's execution, to a time/location where the energy demands are met by cleaner energy production, resulting in a lower *grid-based carbon intensity*.|
 
 Other definitions for the Carbon Awareness found at: <br>
 <a href = "https://github.com/Green-Software-Foundation/Dictionary/blob/dev/Dictionary/Dictionary.md">Green Software Foundation Dictionary</a>
@@ -46,7 +48,7 @@ To enable organizations to make smart decisions about their environmental impact
 
 **Retrospective Analysis:** Time series evaluation to assess the carbon emissions for a given energy profile. Also provides counterfactual analysis to expose the potential emissions of if the run had been shifted. 
 
-**Demand Shifting**: Recommends region and/or time which would yield a less carbon intensive run.  
+**Demand Shifting Scheduler**: Recommends region and/or time which would yield a less carbon intensive run.  
 
 * Temporal: Identifies the window of minimum carbon intensity for a specified run duration within a chosen region from a 24-hour forecast.  
 
@@ -99,6 +101,7 @@ To enable organizations to make smart decisions about their environmental impact
 **Retrospective Analysis**: By mapping grid-based marginal carbon intensity measurements to energy consumption profiles, the carbon footprint of cloud workloads is identified and evaluated.  Part of this evaluation is to find carbon counterfactual emissions of if carbon aware scheduling was used, reporting possible outcomes of temporal and geographic shifts.  
 
 
+
 Given the following:
 <br>
 
@@ -114,7 +117,7 @@ Where:
 
 Using **C** the carbon couterfactuals can be identified because each value is the outcome of a different potential workload shift.    
 
-**Demand Shifting**: Combining carbon intensity forecasts from a certified provider with anticipated workload constraints such as runtime, governance, and needed hardware, a green window can be found in the forecasted time span. 
+**Demand Shifting**: Combining carbon intensity forecasts from a certified provider, with anticipated workload constraints such as runtime, governance, and needed hardware, a green window can be found in the forecasted time span. 
 
 Given the following:
 <br>
@@ -147,17 +150,45 @@ For complete and geographic shifting, permitted data centers can be filtered bas
 
 ## Tool Validation
 
-#### Data Granularity
+Carbon intensity data for validation provided by: [WattTime](https://www.watttime.org/)
 
-Methodolgy 
 
-Results
+### Data Granularity
 
-#### Predictive Accuracy
+**Details:** 
+For the purpose of demand shifting, the effectiveness of using a carbon intensity baseline is compared against using a granular search. The baselines are the annual and monthly marginal emissions rate averages for respective regions, and the data granularities used are 1-hour and 5-minutes.     
 
-Methodolgy 
+| Years Evalulated | Specific Months Evaluated for Each Year  |
+| :------------- | :---------- | 
+| 2020 | January |
+| 2021 | April |
+|  | July |
+|  | October |
+ 
+*Working Data* 
+* Using the [Historical Emissions](https://www.watttime.org/api-documentation/#historical-emissions) endpoint, CI data is reported at 5-minute intervals in month batches by default for each of these regions.   
+* Monthly Average Baseline: Mean MOER over the calander month 
+* Annual Average Baseline: Mean of *Monthly Average Baselines* 
+* 1-Hour CI Reporting Granularity: Mean of aggregated MOER values from 5-minute interval . 
 
-Results
+**Results**
+*Validation in-progress*
+
+
+
+
+<br>
+
+### Search Sensitivity
+
+**Details:**
+
+**Results:**
+*Validation in-progress*
+
+<br>
+
+For more information, please see: [Tool Validation]("")
 
 <br>
 
@@ -165,27 +196,38 @@ Results
 
 ## Case Studies
 
-#### Demand Shifting at Scale of Organizational Operations 
+Carbon intensity data for case studies provided by: [WattTime](https://www.watttime.org/)
 
-Details: *Geographic shifting compute instances at scale would reduce carbon by X% over the month*
+### Demand Shifting at Scale of Organizational Operations 
 
-Results:
+**Details:** *Geographic shifting compute instances at scale would reduce carbon by X% over the month*
 
-#### Demand Shifting at Scale of Individual Users 
+**Results:** *Analysis in-progress*
 
-Details: *Individual users can reduce carbon by Y via time shifting.*
+For more information, please see: [Demand Shifting at Scale of Organizational Operations]("")
 
-Results:
+### Demand Shifting at Scale of Individual Users 
 
-#### Bulk Workload Shifting for Data Centers
+**Details:** *Individual users can reduce carbon by Y via time shifting.*
 
-Details: *Shifting 1% of a data centers workload over a day would reduce overall emissions by Z.*
+**Results:** *Analysis in-progress*
 
-Results:
+For more information, please see: [Demand Shifting at Scale of Individual Users]("")
 
+### Bulk Workload Shifting for Data Centers
+
+**Details:** *Shifting 1% of a data centers workload over a day would reduce overall emissions by Z.*
+
+**Results:** *Analysis in-progress*
+
+
+
+For more information, please see: [Bulk Workload Shifting for Data Centers]("")
 
 <br>
 
 <a name="Tool Recommendations"></a>
 
 ## Recommendations
+
+[GSF SCI Specification](https://github.com/Green-Software-Foundation/software_carbon_intensity/blob/main/Software_Carbon_Intensity/Software_Carbon_Intensity_Specification.md)
