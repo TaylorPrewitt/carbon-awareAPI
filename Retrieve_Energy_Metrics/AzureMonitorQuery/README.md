@@ -1,6 +1,9 @@
 # Azure Monitor
 
-To retrieve energy consumption metrics via Azure Monitor, please follow the below steps:<br>
+To download an energy profile as a .xlsx file for a single workspace through the Azure Monitor UI, please refer to [File Download Instructions](https://github.com/TaylorPrewitt/carbon-awareAPI/blob/main/Retrieve_Energy_Metrics/AzureMonitorQuery/AzureMonitorFileDownload.md). 
+
+<br>
+To query and retrieve energy consumption metrics via Azure Monitor for multiple resources and workspaces at once, please follow the below steps:<br>
 <ol>
   <li><a href="#Install Required Modules">Install Required Modules</a></li>
   <li><a href="#Login to the Azure SDK">Login to the Azure SDK</a></li>
