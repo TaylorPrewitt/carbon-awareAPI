@@ -1,4 +1,6 @@
-## Accessing Azure Monitor
+# File Download Instructions 
+
+## Accessing Azure Monitor UI
 1. Navigate to: https://azure.microsoft.com/en-us/
 2. Login to your Portal
 3. In the search bar at the top center, search "Monitor"
