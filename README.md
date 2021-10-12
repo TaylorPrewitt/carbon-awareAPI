@@ -110,7 +110,7 @@ Given the following:
 Where:
 
 * **t** = discrete time vector<br>
-* M(t) = marginal operating emission rate (MOER) for a given region (i) at a certain point in time (j) for J number of timestampes.<br>
+* M(t) = marginal operating emission rate (MOER) for a given region (i) at a certain point in time (j) for J number of timestamps.<br>
 * E(t) = energy consumed per time interval
 * C<sub><i>i</i></sub> = carbon emitted for a given region and time window (C<sub><i>0</i></sub> is the result from the M(t) for when and where the run was executed)
 * **C** = vector of carbon emissions resultant of different initial conditions for M(t) <br>
@@ -206,13 +206,13 @@ Carbon intensity data for case studies provided by: [WattTime](https://www.wattt
 
 For more information, please see the full case study: [Demand Shifting at Scale of Organizational Operations](https://github.com/TaylorPrewitt/carbon-awareAPI/tree/main/Documentation/Case%20Studies/Organizational_Shifting)
 
-### Demand Shifting at Scale of Individual Users 
+### Carbon Segmented Cloud Computes
 
-**Details:** *Individual users can reduce carbon by Y via time shifting.*
+**Details:** *Execute and progress cloud computes during low emission periods to reduce the carbon footprint by Y kg*
 
 **Results:** *Analysis in-progress*
 
-For more information, please see the full case study: [Demand Shifting at Scale of Individual Users](https://github.com/TaylorPrewitt/carbon-awareAPI/tree/main/Documentation/Case%20Studies/Individual_Shifting)
+For more information, please see the full case study: [Carbon Segmented Cloud Computes](https://github.com/TaylorPrewitt/carbon-awareAPI/tree/main/Documentation/Case%20Studies/Individual_Shifting)
 
 ### Bulk Workload Shifting for Data Centers
 
