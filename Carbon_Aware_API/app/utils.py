@@ -7,7 +7,7 @@ from requests.auth import HTTPBasicAuth
 import statistics
 import datetime
 from datetime import datetime as dt
-
+from app.caches.AzureDataCenter import AzureDataCenterInfo
 
 ALLOWED_EXTENSIONS = set(['csv','json','xlsx'])
 NAME_TO_DISPLAY = json.load(open('./app/static/name_to_display.json', 'r'))
@@ -75,22 +75,9 @@ WattTime_abbrevs = {
 
 
 ALLOWED_EXTENSIONS = set(['csv','json','xlsx'])
-no_symbol = re.compile(r'[^\d.]+')  
+no_symbol = re.compile(r'[^\d.]+')
 
-def get_az():
-
-    '''
-    this gets Data Center information from a static file.
-    work around to implementing OAUTH2 login for a live feed of Azure regions
-    slowly changing list
-    file is JSON of data stream from: subprocess.check_output("az account list-locations", shell=True)
-    '''
-
-    SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
-    json_url2 = os.path.join(SITE_ROOT, "static", "az_regions.json")
-    data_center_info = json.load(open(json_url2))
-    return data_center_info
-
+azure_data_center_info = AzureDataCenterInfo()
 
 def get_token():
     '''
@@ -131,7 +118,7 @@ def getloc_helper(data_center_diplayName):
      Latitude of DC, Longitude of DC, Balancing Authority id}
     '''
 
-    data_center_info = get_az()
+    data_center_info = azure_data_center_info.get_az()
 
     # allow query string to be used in place of form POST
     if not data_center_diplayName:
@@ -185,7 +172,7 @@ def from_ba_helper(BA_full_name):
      Latitude of DC, Longitude of DC, Balancing Authority id}
     '''
 
-    data_center_info = get_az()
+    data_center_info = azure_data_center_info.get_az()
     df = WT_Regions
     # allow for swagger GET
     if BA_full_name != None:
@@ -367,7 +354,7 @@ def avg_carbon_saved():
 WT_Regions = []
 
 # calling Data Center information from json file in static folder. 
-az_coords = get_az()
+az_coords = azure_data_center_info.get_az()
 
 token = get_token()
 # loop to associate WattTime regions to AZ regions 

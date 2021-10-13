@@ -1,7 +1,10 @@
 
 from app.utils import *
+from app.caches.AzureDataCenter import AzureDataCenterInfo
 
-az_coords = get_az()
+azure_data_center_info = AzureDataCenterInfo()
+
+az_coords = azure_data_center_info.get_az()
 
 
 token = get_token()
