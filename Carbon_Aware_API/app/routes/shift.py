@@ -7,8 +7,11 @@ import pandas as pd
 from app.utils import *
 import datetime
 from datetime import datetime as dt
+from app.caches.AzureDataCenter import AzureDataCenterInfo
 
 shift_bp = Blueprint('shift_bp', __name__)
+
+azure_data_center_info = AzureDataCenterInfo()
 
 def get_avg_moer(region_name, starting_time, deltaminutes=60):
     with open("./local_files/all_regions_forecasts.json", "r") as file_in:
@@ -525,7 +528,7 @@ def shift_predictions():
         """
         
         print(az_region)
-        az_coords = get_az()
+        az_coords = azure_data_center_info.get_az()
 
         try:
             geo_time_shift_data = geotime_shift(current_region=az_region)
@@ -627,7 +630,7 @@ def shift_predictions():
 
         az_region = data['AZ_Region']
         print(az_region)
-        az_coords = get_az()
+        az_coords = azure_data_center_info.get_az()
 
         
         '''
@@ -806,7 +809,7 @@ def shift_predictions():
         print(f"data = {data}")
         az_region = data['AZ_Region']
         print(az_region)
-        az_coords = get_az()
+        az_coords = azure_data_center_info.get_az()
 
 
         #finding coords for the Az Regions in the geography
