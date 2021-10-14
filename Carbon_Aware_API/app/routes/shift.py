@@ -33,9 +33,8 @@ def get_avg_moer(region_name, starting_time, deltaminutes=60):
 # 1. Real-time carbon info for BA - from the /get_index_api
 # @app.route('/get_index_data', methods=["GET"])
 def get_realtime_data(ba):
-    token = get_token()
     index_url  = 'https://api2.watttime.org/index'
-    headers = {'Authorization': 'Bearer {}'.format(token)}
+    headers = {'Authorization': 'Bearer {}'.format(azure_data_center_info.get_token())}
     params = {'ba': ba}
     rsp = requests.get(index_url, headers=headers, params=params)
     return rsp.json()
