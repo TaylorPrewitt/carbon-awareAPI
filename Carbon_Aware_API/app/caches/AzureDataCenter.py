@@ -7,6 +7,7 @@ from constant_definitions import DATA_CENTER_INFO_LOCATION
 
 class AzureDataCenterInfo(metaclass=Singleton):
     """This class provide an interface to get all azure data center"""
+
     def __init__(self):
         self.data_center_info = []
 
