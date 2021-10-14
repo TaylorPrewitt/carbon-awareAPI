@@ -1,7 +1,6 @@
 # /app/routes/shift
 
-from flask import Blueprint, redirect, make_response, request, current_app
-from flask.helpers import url_for
+from flask import Blueprint, make_response, request, current_app
 from flask.templating import render_template
 import pandas as pd
 from app.utils import *
@@ -937,7 +936,6 @@ def shift_predictions():
         else: 
             end = end = str(datetime.datetime.now() + datetime.timedelta(hours=24))
         print('swagger starttime works')
-
         try:
             endtime = parser.parse(end, tzinfos=timezone_info).isoformat()
             print(f"input end {endtime}")
