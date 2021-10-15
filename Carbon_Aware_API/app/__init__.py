@@ -12,14 +12,13 @@ swaggerui_blueprint = get_swaggerui_blueprint(
     SWAGGER_URL,
     API_URL,
     config={
-    'app_name': "Carbon API testing"
+        'app_name': "Carbon API testing"
     }
 )
 
 """
 DEFINING CONSTANTS
 """
-
 
 
 """
@@ -33,6 +32,8 @@ file to use.
 
 Default, it'll create the app as it did in the first iteration.
 """
+
+
 def create_flask_app(config=None):
     app = Flask(__name__)
     if config:

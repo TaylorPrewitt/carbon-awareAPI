@@ -28,6 +28,7 @@ def get_username():
 
 class AzureDataCenterInfo(metaclass=Singleton):
     """This class provide an interface to get all azure data center"""
+
     def __init__(self):
         self.data_center_info = []
         # wattime token will expired in 30 minutes cache the token for 29 minutes before requesting another token.
