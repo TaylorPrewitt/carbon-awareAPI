@@ -19,11 +19,12 @@ To query and retrieve energy consumption metrics via Azure Monitor for multiple 
 
 ## Install Required Modules
 These modules are not included as part of the python standard library and are needed to execute the script to retrieve energy metrics:
-1. [requests](https://docs.python-requests.org/en/latest)
-2. [pandas](https://pandas.pydata.org/pandas-docs/stable/index.html)
+1. [az](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli)
+2. [requests](https://docs.python-requests.org/en/latest)
+3. [pandas](https://pandas.pydata.org/pandas-docs/stable/index.html)
 
 To install them, run the following in the command line. 
-`pip install <module name>` 
+`pip install -r requirements.txt` 
 <br><br>
 
 <a name="Login to the Azure SDK"></a>
