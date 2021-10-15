@@ -1,0 +1,62 @@
+/* The whole documentation page */
+.documentation {
+    background-color: #1a1a1f;
+    color: #E3E3E7;
+    margin-top: -12rem;
+}
+
+/* Content */
+.category-title {
+    margin-left: 18%;
+}
+
+.doc-card-section {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: left;
+    margin-left: 18%;
+    margin-right: 18%;
+}
+
+/* Cards */
+.doc-card {
+    position: relative;
+    background-color: #8EB93B;
+    height: 20rem;
+    margin-top: 2rem;
+    width: 20rem;
+    float: left;
+    margin-right: 0.5rem;
+    color: #E3E3E7;
+    padding: 0.5rem;
+}
+
+.doc-card-disabled {
+    position: relative;
+    background-color: grey;
+    height: 20rem;
+    margin-top: 2rem;
+    width: 20rem;
+    float: left;
+    margin-right: 0.5rem;
+    color: #E3E3E7;
+    padding: 0.5rem;
+}
+
+.doc-card:hover {
+    background-color: #007fff;
+}
+
+.doc-card-title {
+    font-size: 2rem;
+    margin-right: 50%;
+
+}
+
+.doc-card-desc {
+    font-size: 1.25rem;
+    margin-right: 50%;
+    position: absolute;
+    bottom: 0;
+    left: 0.5rem;
+}

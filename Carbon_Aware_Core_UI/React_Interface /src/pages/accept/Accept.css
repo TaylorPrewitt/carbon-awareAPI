@@ -1,0 +1,23 @@
+.thank-you {
+    font-size: 2.5rem;
+    text-align: center;
+}
+
+div.icon-card {
+    background-color: #E3E3E7;
+    text-align: center;
+    border-radius: 3rem;
+    margin:3rem;
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+    width: 12rem;
+}
+
+.robot {
+    margin-right: .5rem;
+    border-radius: 3rem;
+}
+
+.thank-space {
+    padding: 6.5rem;
+}

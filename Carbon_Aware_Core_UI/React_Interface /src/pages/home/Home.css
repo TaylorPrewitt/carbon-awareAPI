@@ -1,0 +1,130 @@
+/* Main page image */
+.main_image {
+    width: 100%;
+    z-index: 0;
+}
+
+/* The whole home page */
+.home {
+    background-color: #1a1a1f;
+    color: #E3E3E7;
+    margin-top: -10rem;
+}
+
+/* Home Title Section */
+.title-container {
+    position: relative;
+    text-align: center;
+}
+
+.title-image {
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    height: 105vh;
+}
+
+.microsoft-title {
+    position: absolute;
+    top: 36%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 2em;
+}
+
+.project-title {
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 3.5em;
+}
+
+.green {
+    color: #8EB93B;
+}
+
+/* Problem Space Description */
+.split-image {
+    margin-top: 20rem;
+    width: 100%;
+    height: 350px;
+}
+
+
+.desc-title {
+    font-size: 3rem;
+    text-align: center;
+}
+
+.desc-sub {
+    font-size: 1.25rem;
+    width: 100%;
+    margin-top: 1rem;
+}
+
+.desc-sub-title {
+    font-size: 3rem;
+    text-align: left;
+    color: #007fff;
+}
+
+.desc {
+    margin-right: -25rem;
+}
+
+/* Solution */
+.solution-container {
+    padding-bottom: 1rem;
+    margin-right: 20rem;
+    background-color: #E3E3E7;
+}
+
+.solution-img {
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    width: 100%;
+}
+
+.solution-title {
+    font-size: 3em;
+    color: #1a1a1f;
+}
+
+.solution-desc-sub {
+    font-size: 1.25rem;
+    width: 60%;
+    margin-top: 1.25rem;
+    color: #1a1a1f;
+}
+
+
+.solution-desc {
+    margin: 10rem;
+}
+
+
+/* Node Section */
+.node-container {
+    background-color: #007fff;
+}
+/* Main content */
+.main_content {
+    margin-left: 200px;
+    margin-right: 200px;
+}
+
+/* Link container */
+.link {
+    display: inline-block;
+}
+
+.link-container {
+    text-align: left;
+    margin-left: -3rem;
+}
+
+

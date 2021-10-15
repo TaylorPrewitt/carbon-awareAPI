@@ -1,0 +1,24 @@
+.doc {
+    background-color: #1a1a1f;
+    color: #E3E3E7;
+    margin-top: -12rem;
+}
+
+.doc-content {
+    background-color: #8EB93B;
+    width: 85%;
+    margin-top: -12rem;
+}
+
+.doc-title {
+    margin-left: -5rem;
+}
+
+.body {
+    margin-left: 15rem;
+    margin-right: 15rem;
+}
+
+.xs-extra-space {
+    padding: 3rem;
+}

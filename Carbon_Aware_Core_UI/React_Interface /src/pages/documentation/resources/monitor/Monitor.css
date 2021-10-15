@@ -1,0 +1,88 @@
+body {
+    margin: 0;
+    font-family: 'Segoe UI';
+}
+
+.logo2 {
+    height: 20px;
+    vertical-align: middle;
+    margin-bottom: 7px;
+}
+
+
+.red { color: #aa1c1c; }
+.yellow-background { background-color: rgb(247, 247, 165); }​
+
+.card {
+    justify-content: center;
+    border: 2px solid  #1a1a1f;
+    border-radius: 20px;
+    display:inline-block;
+    margin-left: 3rem;
+    margin-bottom: 1rem;
+}
+
+.markdown {
+    margin-left: 2rem;
+    margin-right: 2rem;
+}
+
+/* Python stuff */
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300&display=swap');
+
+.python {
+    justify-content: center;
+    border: 2px solid  #1a1a1f;
+    border-radius: 10px;
+    display:inline-block;
+    margin-left: 2rem;
+    margin-bottom: 2rem;
+    background-color: rgb(32, 32, 32);
+    color: white;
+    padding-left: 2.5rem;
+    padding-right: 2.5rem;
+    font-family: 'Fira Code', monospace;
+}
+
+.white {
+  font-family: 'Fira Code', monospace;
+}
+
+.pink {
+  color: pink;
+  font-family: 'Fira Code', monospace;
+}
+
+.green-python {
+  color: green;
+  font-family: 'Fira Code', monospace;
+}
+
+.orange {
+  color: orange;
+  font-family: 'Fira Code', monospace;
+}
+
+.yellow {
+  color: yellow;
+  font-family: 'Fira Code', monospace;  
+}
+
+.light-green {
+  color: lightgreen;
+  font-family: 'Fira Code', monospace;
+}
+
+.blue-python {
+  color: rgb(35, 105, 235);
+  font-family: 'Fira Code', monospace;
+}
+
+.l-blue {
+  color: rgb(109, 216, 252);
+  font-family: 'Fira Code', monospace;
+}
+
+.python p {
+    margin-top:1rem;
+}
