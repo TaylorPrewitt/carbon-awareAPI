@@ -18,7 +18,6 @@ import splitImg from '../../img/split.png'
 // library for scrolling animation
 import { Animator, ScrollContainer, ScrollPage, batch, Fade, FadeIn, Move, MoveIn, MoveOut, Sticky, StickyIn, ZoomIn } from "react-scroll-motion";
 
-
 import './Shifting.css'
 
 const Shifting = () => {
@@ -507,7 +506,7 @@ const Shifting = () => {
                                         <input type="number" min="0" max="24" step="1" name="window_size_hours"  className="box-input" placeholder="HH"/>&emsp;&emsp;
 
                                         <label htmlFor="window_size_minutes">Minutes (divisible by 5):</label>
-                                        <input type="number" min="0" max="60" step="5" name="window_size_minutes"  className="box-input" placeholder="MM"/>&emsp;&emsp;
+                                        <input type="number" min="0" max="60" step="5" name="window_size_minutes"  className="box-input" placeholder="MM"/>
 
                                         <div className="space">
                                             <br />
@@ -539,16 +538,32 @@ const Shifting = () => {
                                             <option value="MI25">MI25</option>
                                             <option value="A100">A100</option>
                                         </select>
-
-                                        <div className="sm-space">
-                                            <br />
-                                        </div>  
-
-                                        <input className="mt-3" type="checkbox" name='sensitive'/> Workspace Contains Protected Data
-
+                                        
                                         &nbsp;&nbsp;
 
+                                        <div className="space">
+                                            <br />
+                                        </div>
+
+                                        {/* Step Five */}
+                                        <span className="steps green"><strong>Step Five: </strong></span>
+                                        <label><b>Select weight factor for Carbon intensity, cost and latency</b></label>
+                                        <br /><br />
+                                        
+                                        <p>Carbon Efficiency:</p>
+                                        <input type="range" id="carbonEfficiency" name="carbonEfficiency" min="0" max="1" step="0.1"/>
+
+                                        <p>Cost:</p>
+                                        <input type="range" id="cost" name="cost" min="0" max="1" step="0.1"/>
+
+                                        <p>Latency:</p>
+                                        <input type="range" id="latency" name="latency" min="0" max="1" step="0.1"/>
+                                        
+
                                         {/* Tooltip */}
+                                        <br/>
+                                        <input className="mt-3" type="checkbox" name='sensitive'/> Workspace Contains Protected Data
+                                        &nbsp;&nbsp;
                                         <BsFillQuestionCircleFill data-tip data-for="protect" className="mb-1 blue"/>   
                                         <ReactTooltip id='protect' aria-haspopup='true' role='example'>
                                             <p className="tooltip-desc"><strong>Protected Data</strong> implies that the workspace contains data subject to international migration and privacy laws.  Selecting this option limits any potenial workload shift to data centers that would be compliant and not violate laws.</p>
