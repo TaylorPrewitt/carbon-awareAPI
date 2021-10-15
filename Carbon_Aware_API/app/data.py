@@ -20,6 +20,7 @@ wt_region_df = pd.DataFrame(WT_Regions)
 az_coords_WT_joined = [az_coords, WT_Regions]
 az_coords_df = az_coords_df.reset_index()
 
+
 az_coords_df.columns = ['OldIndex', 'displayName', 'id', 'metadata', 'name',
                         'regionalDisplayName', 'subscriptionId']
 wt_region_df = wt_region_df.reset_index()
@@ -36,16 +37,17 @@ AZ_WT_join = AZ_WT_join.sort_values(by='WattTimeData', ascending=False)
 AZ_WT_join = AZ_WT_join.reset_index()
 AZ_WT_join = AZ_WT_join.drop('index', axis=1)
 
+
 # Azure Data Centers that are supported by WattTime balancing authorities
 AZ_with_WattTime = AZ_WT_join[:26]
 
-# Azure Data Centers that have no geo-coordinates associated with them   
+# Azure Data Centers that have no geo-coordinates associated with them
 AZ_with_no_coords = AZ_WT_join[26:46]
 
-# Azure Data Centers that are NOT supported by WattTime balancing authorities  
+# Azure Data Centers that are NOT supported by WattTime balancing authorities
 AZ_with_no_WattTime = AZ_WT_join[46:65]
 
-# DisplayNames of Azure Data Centers that are supported by WattTime balancing authorities  
+# DisplayNames of Azure Data Centers that are supported by WattTime balancing authorities
 AZ_with_WattTime_names = AZ_with_WattTime['displayName']
 
 
@@ -54,7 +56,8 @@ def get_mappy():
     regions = []
     Key = "displayName"
     for region_name in AZ_with_WattTime_names:
-        areaDict = next(filter(lambda x: x.get(Key) == region_name, az_coords), None)
+        areaDict = next(filter(lambda x: x.get(Key) ==
+                        region_name, az_coords), None)
         region_name = areaDict[Key]
         lat, lon = areaDict['metadata']['latitude'], areaDict['metadata']['longitude']
         regions.append({'region_name': region_name,
@@ -92,7 +95,8 @@ def get_mappy():
         moer = int(float(region_vals['moer']))
         data.append([ba, percent, moer])
 
-    map_data = pd.DataFrame(data, columns=["Balancing Authority", "Emission Percent", "MOER Value"])
+    map_data = pd.DataFrame(
+        data, columns=["Balancing Authority", "Emission Percent", "MOER Value"])
     #########
 
     map_locs = pd.DataFrame(regions)
@@ -109,7 +113,7 @@ def gather_watttime(ba, starttime, endtime):
         ba: Region Abbreviation - string
         starttime: Starting datetime of inference session - dt
         endtime: Ending datetime of inference session - dt
-    
+
     Output:
         JSON object containing WattTime response
     '''
@@ -121,7 +125,7 @@ def gather_watttime(ba, starttime, endtime):
 
     rsp = requests.get(data_url, headers=headers, params=params)
 
-    ## integrity check
+    # integrity check
     data_check = str.strip(rsp.text[2:7])
     print(f"data_check = {data_check}")
     if data_check == 'error':
@@ -149,7 +153,7 @@ def gather_azmonitor(filename, gpuutil_flag):
             msg = 'use either a .xlsx, .csv, or .json file with the proper data type formats.'
             return make_response(render_template('data_error.html', msg=msg), 412)
 
-            # if json, convert to pandas dataframe
+    # if json, convert to pandas dataframe
     elif filename[-4:] == 'json':
         az_file = format_json(filename)
         print(az_file[:3])
