@@ -82,6 +82,22 @@ def get_SKU_table():
     return SKU_data_table
 
 
+def get_network_latency_table():
+    SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
+    print(SITE_ROOT)
+    csv_url = os.path.join(current_app.config['ROOT_DIR'], "app/static", "azure_network_latency.csv")
+    network_latency_table = pd.read_csv(csv_url).dropna()
+    return network_latency_table
+
+
+def get_azure_ml_cost_table():
+    SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
+    print(SITE_ROOT)
+    csv_url = os.path.join(current_app.config['ROOT_DIR'], "app/static", "azure_mlsetup_cost.csv")
+    azure_ml_cost_table = pd.read_csv(csv_url).dropna()
+    return azure_ml_cost_table
+
+
 def Law_filter(SKU_data_table, sensitive_check_box, Az_region):
     '''
     function to filter based on sovereignty laws.  
@@ -310,6 +326,77 @@ def recent_region_data():
     return data_for_table
 
 
+def geoshift_slider(current_region=None, filtered_regions=[], az_region_features_dict={}):
+    # update_all_regions_forecast_data() # FOR TESTING. Remove in production
+    if not os.path.isfile("./local_files/all_regions_forecasts.json"):  # If file doesn't exist, run the update function to generate the cached file first then open this same file.
+        print("All Region forecast data exists... Using existing cache.")
+        update_all_regions_forecast_data()
+    with open("./local_files/all_regions_forecasts.json", "r") as file_in:
+        all_regions_forecasts = json.loads(json.load(file_in))  # Read in as string json. doing a second json.loads deserializes into json/dict object.
+
+    # get from the user
+    carbon_footprint_optimise_value = request.form.get("carbonEfficiency", default=5)
+    cost_optimise_value = request.form.get("cost", default=0)
+    latency_optimise_value = request.form.get("latency", default=0)
+
+    Network_Latency_Table = get_network_latency_table()
+    Ml_Setup_Cost_Table = get_azure_ml_cost_table()
+
+    maximum_index_percent, maximum_average_moer, maximum_cost, maximum_latency = 0, 0, 0, 0
+    for az_region in all_regions_forecasts.keys():
+        print("==========================================================")
+        displayName = all_regions_forecasts[az_region]['displayName']
+        print(az_region, displayName)
+        print(f"Display name of current region: {displayName}")
+        if displayName not in filtered_regions:
+            print(f"Region: {displayName} not in filtered list for LAW and GPU. Skipping\n")
+            continue
+        print(f"Region being searched: {az_region}, Current Region Selected: {current_region}")
+
+        ba = az_region_features_dict[az_region]['ba']
+        ba_name, ba_abbrev = [str(x) for x in ba.split(', ')]
+        realT = get_realtime_data(ba_abbrev)
+        print(realT)
+
+        index_percent_azure_region = float(realT['percent'])
+        average_moer_azure_region = az_region_features_dict[az_region]['minimum_avg_moer']
+        print(f"index percent of the region: {index_percent_azure_region}")
+        print(f"minimum_avg_moer of the region: {average_moer_azure_region}")
+        maximum_index_percent = max(maximum_index_percent, index_percent_azure_region)
+        maximum_average_moer = max(maximum_average_moer, average_moer_azure_region)
+
+        cost_azure_region = int(Ml_Setup_Cost_Table[Ml_Setup_Cost_Table['Regions'] == displayName]['Cost'].item())
+        print(f"cost of azure region: {cost_azure_region}")
+        maximum_cost = max(maximum_cost, cost_azure_region)
+
+        latency_azure_region = int(Network_Latency_Table[Network_Latency_Table['Regions'] == current_region][displayName].item())
+        print(f"latency of azure region: {latency_azure_region}")
+        maximum_latency = max(maximum_latency, latency_azure_region)
+
+        az_region_features_dict[az_region]['index'] = index_percent_azure_region
+        az_region_features_dict[az_region]['cost'] = cost_azure_region
+        az_region_features_dict[az_region]['latency'] = latency_azure_region
+
+    for az_region in all_regions_forecasts.keys():
+        print("==========================================================")
+        displayName = all_regions_forecasts[az_region]['displayName']
+        print(f"Display name of current region: {displayName}")
+        print()
+        if displayName not in filtered_regions:
+            print(f"Region: {displayName} not in filtered list for LAW and GPU. Skipping\n")
+            continue
+        print(f"Region being searched: {az_region}, Current Region Selected: {current_region}")
+        # print(f"1-norm(index_percent_azure_region): {(1-az_region_features_dict[az_region]['index']/maximum_index_percent)}, 1-norm(average_moer_azure_region): {(1-az_region_features_dict[az_region]['minimum_avg_moer']/maximum_average_moer)},1-norm(cost_azure_region): {(1 - (az_region_features_dict[az_region]['cost']/maximum_cost))}, 1-norm(latency_azure_region):{(1 - (az_region_features_dict[az_region]['latency']/maximum_latency))}")
+        result = carbon_footprint_optimise_value * ((1-(az_region_features_dict[az_region]['index']/maximum_index_percent)) * (1-(az_region_features_dict[az_region]['minimum_avg_moer']/maximum_average_moer))) + cost_optimise_value * (1 - (az_region_features_dict[az_region]['cost']/maximum_cost)) + latency_optimise_value * (1 - (az_region_features_dict[az_region]['latency']/maximum_latency))
+        az_region_features_dict[az_region]['net_result_value'] = result
+        print(f"result: {az_region_features_dict[az_region]['net_result_value']}")
+
+    print(az_region_features_dict)
+    load_shifting_potential_list = sorted(az_region_features_dict.items(), key=lambda x: x[1]['net_result_value'], reverse=True)
+    print(load_shifting_potential_list)
+    return load_shifting_potential_list
+
+
 @shift_bp.route('/geotime_shift', methods=["GET"])
 def geotime_shift(current_region=None):
     # update_all_regions_forecast_data() # FOR TESTING. Remove in production
@@ -371,8 +458,8 @@ def geotime_shift(current_region=None):
     print(
         f"Querying with the following, CURRENT_AZ_REGION of {current_region}, CURRENT_TIME of {current_time}, WINDOW_SIZE of {deltaminutes} minutes")
     # These variables keep track of which region had the minimum average MOER value for the given window size as well as that given value. 
-    minimum_region, minimum_avg_moer, greenest_starttime = None, float("inf"), datetime.datetime.now()
     current_region_moers = []  # Variables to keep track of current region's average moer for the given window.
+    az_region_features = {}
     for az_region, time_moer in all_regions_forecasts.items():
         print("==========================================================")
         displayName = all_regions_forecasts[az_region]['displayName']
@@ -392,7 +479,11 @@ def geotime_shift(current_region=None):
                     break
                 if current_time <= point_time <= current_time + datetime.timedelta(minutes=deltaminutes):
                     current_region_moers.append(moer)
+            current_region_avg = sum(current_region_moers) / len(current_region_moers)
+            print(f"Current region average: {current_region_avg}")
 
+        minimum_avg_moer = float("inf")
+        greenest_starttime = datetime.datetime.now()
         for index, time in enumerate(point_times):
             current_moer_vals = []  # keep track of the current window
             start_time = datetime.datetime.fromisoformat(
@@ -410,25 +501,33 @@ def geotime_shift(current_region=None):
 
             average_moer = sum(current_moer_vals) / len(current_moer_vals)
 
-            if average_moer < minimum_avg_moer:
-                minimum_region, minimum_avg_moer = az_region, average_moer
+            if average_moer <= minimum_avg_moer:
+                minimum_avg_moer = average_moer
                 greenest_starttime = time
 
-    current_region_avg = sum(current_region_moers) / len(current_region_moers)
-    print(current_region_avg)
-    print(minimum_avg_moer)
-    perc_diff = ((current_region_avg - minimum_avg_moer) / current_region_avg) * 100
-    ba = all_regions_forecasts[minimum_region]['ba']
+        az_region_features[az_region] = {}
+        az_region_features[az_region]['ba'] = all_regions_forecasts[az_region]['ba']
+        az_region_features[az_region]['minimum_avg_moer'] = minimum_avg_moer
+        az_region_features[az_region]['greenest_start_time'] = greenest_starttime
+
+    load_shifting_potential_list = geoshift_slider(current_region=current_region,
+                                                   filtered_regions=filtered_regions_list,
+                                                   az_region_features_dict=az_region_features)
+    print(load_shifting_potential_list)
+
+    # TODO : This can be modified to return top 3 potential regions
+    perc_diff = ((abs(current_region_avg - load_shifting_potential_list[0][1]['minimum_avg_moer'])) / current_region_avg) * 100
     return_dict = {
         'current_region': current_region,
         'current_region_avg': current_region_avg,
         'current_starttime': current_time.isoformat(),
-        'greenest_region': NAME_TO_DISPLAY[minimum_region], 'greenest_starttime': greenest_starttime,
-        'greenest_region_BA': ba,
-        'minimum_avg_moer': minimum_avg_moer, 'percentage_decrease': round(perc_diff, 2),
+        'greenest_region': NAME_TO_DISPLAY[load_shifting_potential_list[0][0]],
+        'greenest_starttime': load_shifting_potential_list[0][1]['greenest_start_time'],
+        'greenest_region_BA': load_shifting_potential_list[0][1]['ba'],
+        'minimum_avg_moer': load_shifting_potential_list[0][1]['minimum_avg_moer'],
+        'percentage_decrease': round(perc_diff, 2),
         'window_size_in_minutes': deltaminutes
     }
-    # print(return_dict)
     return return_dict  # Need to return as normal dictionary. Don't use jsonify(). It'll return as a response object.
 
 
@@ -581,9 +680,9 @@ def shift_predictions():
         try:
             if dc_location in WT_names.name.tolist():
                 print(f"region_ba is {dc_location}")
-                print(f"found match at {l}")
+                # print(f"found match at {l}")
                 print(f"input = {dc_location}")
-                print(f"match = {WT_names['name'][l]}")
+                # print(f"match = {WT_names['name'][l]}")
                 print('using dc_location')
             """
             for l in range(len(WT_names)):
@@ -668,46 +767,48 @@ def shift_predictions():
 
         region_data = geo_shifting(window_size)
 
-        filtered_emissions_list = []
-        for data_center in filtered_regions_list:
-            try:
-                selected_data = region_data[DISPLAY_TO_NAME[data_center]]
-                filtered_emissions_list.append(selected_data)
-            except KeyError:
-                print(f" this area did not have forecast data {data_center}")
+        # update_all_regions_forecast_data() # FOR TESTING. Remove in production
+        if not os.path.isfile("./local_files/all_regions_forecasts.json"):  # If file doesn't exist, run the update function to generate the cached file first then open this same file.
+            print("All Region forecast data exists... Using existing cache.")
+            update_all_regions_forecast_data()
+        with open("./local_files/all_regions_forecasts.json", "r") as file_in:
+            all_regions_forecasts = json.loads(json.load(file_in))  # Read in as string json. doing a second json.loads deserializes into json/dict object.
 
-        print(f"filtered_emissions_list = {filtered_emissions_list}")
+        az_region_features = {}
+        for region_name in all_regions_forecasts.keys():
+            print("==========================================================")
+            displayName = all_regions_forecasts[region_name]['displayName']
+            print(region_name, displayName)
+            print(f"Display name of current region: {displayName}")
+            if displayName not in filtered_regions_list:
+                print(f"Region: {displayName} not in filtered list for LAW and GPU. Skipping\n")
+                continue
+            print(f"Region being searched: {region_name}")
+            az_region_features[region_name] = {}
+            az_region_features[region_name]['ba'] = all_regions_forecasts[region_name]['ba']
+            az_region_features[region_name]['minimum_avg_moer'] = region_data[region_name]['average_moer_value']
 
-        # print(f"list_location_data = {list_location_data}")
-        # finding coords for the Az Regions in the geography
-        window_moer = []
-        window_data_center = []
-        for data_center in range(len(filtered_emissions_list)):
-            emissions_avg = filtered_emissions_list[data_center]['average_moer_value']
-            window_moer.append(emissions_avg)
-            window_data_center.append(filtered_emissions_list[data_center])
+        current_region = az_region
+        load_shifting_potential_list = geoshift_slider(current_region=current_region,
+                                                       filtered_regions=filtered_regions_list,
+                                                       az_region_features_dict=az_region_features)
+        print(load_shifting_potential_list)
+
         try:
-            current_region_moer = region_data[DISPLAY_TO_NAME[az_region]]['average_moer_value']
+            current_region_avg = region_data[DISPLAY_TO_NAME[az_region]]['average_moer_value']
         except KeyError:
             data = get_current_min_region(filtered_regions_list, az_region)
             print(f"data package is {data}")
             return render_template('load_shift_eval_2.html', data=data)
 
-        minimum_window_moer = min(window_moer)
-        minimum_window_moer_index = window_moer.index(minimum_window_moer)
-        minimum_region = window_data_center[minimum_window_moer_index]['data_center_name']
-        percent_difference = 100 * (current_region_moer - minimum_window_moer) / current_region_moer
-
-        print(f"minimum_window_moer = {minimum_window_moer}")
-        print(f"minumum_region = {minimum_region}")
-        minimum_region_ba = getloc_helper(NAME_TO_DISPLAY[minimum_region])['name']
+        percent_difference = ((abs(current_region_avg - load_shifting_potential_list[0][1]['minimum_avg_moer'])) / current_region_avg) * 100
 
         page_data = {}
-        page_data['greenest_moer'] = minimum_window_moer
+        page_data['greenest_moer'] = load_shifting_potential_list[0][1]['minimum_avg_moer']
         page_data['inputRegion'] = az_region
-        page_data['shiftAZ'] = NAME_TO_DISPLAY[minimum_region]
+        page_data['shiftAZ'] = NAME_TO_DISPLAY[load_shifting_potential_list[0][0]]
         page_data['shift_perc'] = round(percent_difference, 2)
-        page_data['shiftBA'] = minimum_region_ba
+        page_data['shiftBA'] = load_shifting_potential_list[0][1]['ba']
         page_data['window_size_in_minutes'] = window_size
 
         response = {}
@@ -916,6 +1017,10 @@ def shift_predictions():
         print(str(pred_forecast)[:6])
 
         # print(f"pred_forecast['forecast'] = {pred_forecast['forecast']}")
+
+        ######
+        ### Add integration for slider values in Time shifting calculations like added for above two
+        ######
 
         ########
         ### if no MOER forecast data available for the region submethod of only geog shift w/ no time shift
