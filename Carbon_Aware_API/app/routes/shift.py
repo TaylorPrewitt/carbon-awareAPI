@@ -1213,3 +1213,171 @@ def prediction_made():
     carbon_to_date = avg_carbon_saved()
 
     return render_template("prediction_made.html", data=carbon_to_date)
+
+
+def get_workspace(current_region=None, filtered_regions=[], az_region_features_dict={}):
+    # update_all_regions_forecast_data() # FOR TESTING. Remove in production
+    if not os.path.isfile("./local_files/all_regions_forecasts.json"):  # If file doesn't exist, run the update function to generate the cached file first then open this same file.
+        print("All Region forecast data exists... Using existing cache.")
+        update_all_regions_forecast_data()
+    with open("./local_files/all_regions_forecasts.json", "r") as file_in:
+        all_regions_forecasts = json.loads(json.load(file_in))  # Read in as string json. doing a second json.loads deserializes into json/dict object.
+
+    # get from the user
+    carbon_footprint_optimise_value = float(request.form.get("carbonEfficiency", default=5))
+    cost_optimise_value = float(request.form.get("cost", default=0))
+    latency_optimise_value = float(request.form.get("latency", default=0))
+
+    Network_Latency_Table = get_network_latency_table()
+    Ml_Setup_Cost_Table = get_azure_ml_cost_table()
+
+    maximum_average_moer, maximum_cost, maximum_latency = 0, 0, 0
+    for az_region in all_regions_forecasts.keys():
+        print("==========================================================")
+        displayName = all_regions_forecasts[az_region]['displayName']
+        print(az_region, displayName)
+        print(f"Display name of current region: {displayName}")
+        if displayName not in filtered_regions:
+            print(f"Region: {displayName} not in filtered list for LAW and GPU. Skipping\n")
+            continue
+        print(f"Region being searched: {az_region}, Current Region Selected: {current_region}")
+
+        average_moer_azure_region = az_region_features_dict[az_region]['minimum_avg_moer']
+
+        print(f"minimum_avg_moer of the region: {average_moer_azure_region}")
+
+        maximum_average_moer = max(maximum_average_moer, average_moer_azure_region.values)
+
+        cost_azure_region = int(Ml_Setup_Cost_Table[Ml_Setup_Cost_Table['Regions'] == displayName]['Cost'].item())
+        print(f"cost of azure region: {cost_azure_region}")
+        maximum_cost = max(maximum_cost, cost_azure_region)
+
+        latency_azure_region = int(Network_Latency_Table[Network_Latency_Table['Regions'] == current_region][displayName].item())
+        print(f"latency of azure region: {latency_azure_region}")
+        maximum_latency = max(maximum_latency, latency_azure_region)
+
+
+        az_region_features_dict[az_region]['cost'] = cost_azure_region
+        az_region_features_dict[az_region]['latency'] = latency_azure_region
+
+    for az_region in all_regions_forecasts.keys():
+        print("==========================================================")
+        displayName = all_regions_forecasts[az_region]['displayName']
+        print(f"Display name of current region: {displayName}")
+        print()
+        if displayName not in filtered_regions:
+            print(f"Region: {displayName} not in filtered list for LAW and GPU. Skipping\n")
+            continue
+        print(f"Region being searched: {az_region}, Current Region Selected: {current_region}")
+        # print(f"1-norm(index_percent_azure_region): {(1-az_region_features_dict[az_region]['index']/maximum_index_percent)}, 1-norm(average_moer_azure_region): {(1-az_region_features_dict[az_region]['minimum_avg_moer']/maximum_average_moer)},1-norm(cost_azure_region): {(1 - (az_region_features_dict[az_region]['cost']/maximum_cost))}, 1-norm(latency_azure_region):{(1 - (az_region_features_dict[az_region]['latency']/maximum_latency))}")
+        result = carbon_footprint_optimise_value * ((1-(az_region_features_dict[az_region]['minimum_avg_moer']/maximum_average_moer))) + cost_optimise_value * (1 - (az_region_features_dict[az_region]['cost']/maximum_cost)) + latency_optimise_value * (1 - (az_region_features_dict[az_region]['latency']/maximum_latency))
+        az_region_features_dict[az_region]['net_result_value'] = result
+        print(f"result: {az_region_features_dict[az_region]['net_result_value']}")
+
+    print(az_region_features_dict)
+    #load_shifting_potential_list = sorted(az_region_features_dict.items(), key=lambda x: x[1]['net_result_value'], reverse=True)
+    #print(load_shifting_potential_list)
+    return az_region_features_dict
+
+
+
+@shift_bp.route('/workspace', methods=["GET", "POST"])
+def get_best_workspace():
+
+    dc_location = request.args.get('data_az', None)
+    try:
+        dc_location = NAME_TO_DISPLAY[dc_location]
+        
+    except:
+        print('no region via GET')
+        dc_location = request.form.get('data_az', 'East US')
+
+
+    data = getloc_helper(dc_location)
+    az_region = data['AZ_Region']
+
+    print(az_region)
+
+
+    '''
+    switching from basic search of regions to allow filtering based on
+    laws/compliance for data sets and desired GPU types
+    updates region list to search for minimum MOER based on filtered data
+    '''
+
+    SKU_table = get_SKU_table()
+    sensitive_check_box = request.form.get('sensitive', 'off')
+    desired_GPU = request.form.get('gpu_type', 'nada')
+    filter_list = Law_filter(SKU_table, sensitive_check_box, az_region)
+    filtered_regions_list = Gpu_filter(filter_list, desired_GPU)
+
+
+    region_data = get_yearly_data()
+
+    # update_all_regions_forecast_data() # FOR TESTING. Remove in production
+    if not os.path.isfile("./local_files/all_regions_forecasts.json"):  # If file doesn't exist, run the update function to generate the cached file first then open this same file.
+        print("All Region forecast data exists... Using existing cache.")
+        update_all_regions_forecast_data()
+    with open("./local_files/all_regions_forecasts.json", "r") as file_in:
+        all_regions_forecasts = json.loads(json.load(file_in))  # Read in as string json. doing a second json.loads deserializes into json/dict object.
+
+    az_region_features = {}
+    for region_name in all_regions_forecasts.keys():
+        print("==========================================================")
+        displayName = all_regions_forecasts[region_name]['displayName']
+        print(region_name, displayName)
+        print(f"Display name of current region: {displayName}")
+        if displayName not in filtered_regions_list:
+            print(f"Region: {displayName} not in filtered list for LAW and GPU. Skipping\n")
+            continue
+        print(f"Region being searched: {region_name}")
+        az_region_features[region_name] = {}
+        az_region_features[region_name]['ba'] = all_regions_forecasts[region_name]['ba']
+        print(f"the region_data is: {region_data}")
+
+        az_region_features[region_name]['minimum_avg_moer'] = region_data[region_data['Region']==displayName]['year_avg']
+
+
+    current_region = az_region
+    load_shifting_potential_list = get_workspace(current_region=current_region,
+                                                    filtered_regions=filtered_regions_list,
+                                                    az_region_features_dict=az_region_features)
+    print('======================================')
+
+    load_shifting_potential_list = load_shifting_potential_list.items()
+
+
+    #load_shifting_potential_list = sorted(pd.DataFrame(load_shifting_potential_list), key=lambda x: x[1]['net_result_value'], reverse=True)
+    load_shifting_potential_list = pd.DataFrame(load_shifting_potential_list)
+    net_result_vals = []
+    for x in range(len(load_shifting_potential_list)):
+        if len(load_shifting_potential_list[1][x]['net_result_value']) != None:
+            net_result = str(load_shifting_potential_list[1][x]['net_result_value'])
+
+            try:
+                net_result = net_result.split(" ")[4]
+                if net_result == 'float64)':
+                    net_result = 0
+                else:
+                    net_result = net_result.split("\n")[0]
+                    net_result = float(net_result)
+            except IndexError:
+                net_result = 0
+
+            net_result_vals.append({'region':load_shifting_potential_list[0][x],
+                                    'net_result':net_result})
+        else:
+            net_result_vals.append({'region':load_shifting_potential_list[0][x],
+                        'net_result':0})
+
+
+    best_region = pd.DataFrame(net_result_vals)
+
+    best_region_index = best_region['net_result'].idxmax(axis=1)
+    best_region_name = best_region['region'][best_region_index]
+    green_workspace = {'name':best_region_name, 'displayName':NAME_TO_DISPLAY[best_region_name]}
+    print(green_workspace)
+
+
+    return jsonify({'type':'workspace', 'greenworkspace':green_workspace})
+
