@@ -92,7 +92,7 @@ For more information and detailed results, please see the full case study: [Dema
 
 **Results:** *Computes greater than 24 hours saw 0% change with standard temporal shifting, but controlling progression based on regional carbon intesity thresholds reduced operational emissions by 10%*
 
-For more information and detailed results, please see the full case study: [Carbon Segmented Cloud Computes](https://github.com/TaylorPrewitt/carbon-awareAPI/tree/main/Documentation/Case%20Studies/Carbon_Throttle)
+For more information and detailed results, please see the full case study: [Carbon Segmented Cloud Computes](https://github.com/TaylorPrewitt/carbon-awareAPI/tree/main/Documentation/Case%20Studies/Carbon_trigger)
 
 
 
