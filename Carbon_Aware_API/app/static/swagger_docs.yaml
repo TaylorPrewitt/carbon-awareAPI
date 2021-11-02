@@ -1,0 +1,331 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: Azure GreenAI Carbon-Intensity API
+  description: >-
+    An API to associate Azure regions to WattTime balancing authorities, to
+    return carbon intensity data
+externalDocs:
+  url: 'http://azure-uw-cli-2021.azurewebsites.net/'
+  description: Link back to the GreenAI Carbon Intensity API
+tags:
+  - name: search
+    description: Methods for finding WattTime balancing authority
+  - name: data
+    description: Pulling data directly from WattTime
+paths:
+  /getloc:
+    get:
+      tags:
+        - search
+      summary: Finds corresponding balancing authority of an Azure region
+      description: ''
+      parameters:
+        - name: AZ_Region
+          in: query
+          required: true
+          description: Name of Azure region
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/loc_resp'
+
+  /from_ba:
+    get:
+      tags:
+        - search
+      summary: Finds nearest Azure region for a given balancing authority
+      description: ''
+      parameters:
+        - name: BA_name
+          in: query
+          required: true
+          description: Balancing authority name
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/from_ba_resp'
+  /get_grid_data:
+    get:
+      tags:
+        - data
+      summary: >-
+        Returns marginal grid data for a given balancing authority and time
+        period
+      description: ''
+      parameters:
+        - name: ba
+          in: query
+          required: true
+          description: Balancing Authority (WattTime format, contains underscores)
+          schema:
+            type: string
+        - name: starttime
+          in: query
+          required: true
+          description: Starting time (ISO8601 format)
+          schema:
+            type: string
+        - name: endtime
+          in: query
+          required: true
+          description: Ending time (ISO8601 format)
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/grid_data_resp'
+  /get_index_data:
+    get:
+      tags:
+        - data
+      summary: Returns real-time data for a given balancing authority and time period
+      description: ''
+      parameters:
+        - name: ba
+          in: query
+          required: true
+          description: Balancing Authority (WattTime format, contains underscores)
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Real-time ba data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/index_data_resp'
+  /get_forecast_data:
+    get:
+      tags:
+        - data
+      summary: >-
+        Returns marginal forecast data for a given balancing authority and time
+        period
+      description: ''
+      parameters:
+        - name: ba
+          in: query
+          required: true
+          description: Balancing Authority (WattTime format, contains underscores)
+          schema:
+            type: string
+        - name: starttime
+          in: query
+          required: false
+          description: Starting time (ISO8601 format)
+          schema:
+            type: string
+        - name: endtime
+          in: query
+          required: false
+          description: Ending time (ISO8601 format)
+          schema:
+            type: string
+      responses:
+        '200':
+          description: forecast data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/forecast_data_resp'
+  /get_historical_data:
+    get:
+      tags:
+        - data
+      summary: Returns historical data for a given balancing authority
+      description: ''
+      parameters:
+        - name: ba
+          in: query
+          required: true
+          description: Balancing Authority
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Historical ba data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/historical_data_resp'
+  /shift_predictions:
+    get:
+      tags:
+        - data
+      summary: >-
+        Finds the greenest start time for GPU runs shifted either by Geography or Time.
+      description: ''
+      parameters:
+        - name: data_shifter
+          in: query
+          required: true
+          description: "\"Geographic Shift Only\", \"Time Shift Only\", or \"Demand Shift\""
+          schema:
+            type: string
+        - name: data_az
+          in: query
+          required: true
+          description: Azure Region of interest.
+          schema:
+            type: string
+        - name: starttime
+          in: query
+          required: false
+          description: "Earliest Start Time (ISO8601 format).
+          \n\nFormat: YYYY-MM-DDTHH:MM:SS+0000
+          \n\nExample: 2021-09-01T12:30:00+0000
+          \n\nOnly for Time Shift method."
+          schema:
+            type: string
+        - name: endtime
+          in: query
+          required: false
+          description: "Last Possible Start Time (ISO8601 format). 
+          \n\nFormat: YYYY-MM-DDTHH:MM:SS+0000
+          \n\nExample: 2021-09-01T12:30:00+0000
+          \n\nOnly for Time Shift method."
+          schema:
+            type: string
+        - name: window_size_hours
+          in: query
+          required: false
+          description: "Window size in hours to shift over. E.g. Given a window size of 3 hours, it will
+          run a sliding window of 3 hours and return the start time of the window with the lowest average MOER value. 
+          Can be combined with \"window minutes\" to get more granular sliding window sizes.
+          \n\n Minimum size = 1 hour, maximum size = 24 hours. Will default to these values if given 
+          window sizes smaller than the minimum or larger than the maximum."
+          schema:
+            type: string
+        - name: window_size_minutes
+          in: query
+          required: false
+          description: "Window size in hours to shift over. E.g. Given a window size of 60 minutes, it will
+          run a sliding window of 1 hour and return the start time of the window with the lowest average MOER value. 
+          Can be combined with \"window hours\" to get more granular sliding window sizes.
+          \n\n Minimum size = 1 hour, maximum size = 24 hours. Will default to these values if given 
+          window sizes smaller than the minimum or larger than the maximum."
+          schema:
+            type: string
+        - name: Run window
+          in: query
+          required: false
+          description: "In hours. To aid with priority. The run window determines how far ahead to shift for. For example,
+          running a shift prediction with a run window of 12 hours will only look 12 hours ahead. 
+          \n\n Default is 24 hours."
+          schema:
+            type: string
+        - name: sensitive data
+          in: query
+          required: false
+          description: If the data has to follow compliance with data sovereignty laws. "sensitive" or "off" 
+          schema:
+            type: string
+        - name: desired GPU
+          in: query
+          required: false
+          description: The specific GPU desired. E.g. P100, T4
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/shift_resp'
+components:
+  schemas:
+    loc_resp:
+      properties:
+        abbrev:
+          type: string
+        id:
+          type: string
+        name:
+          type: string
+    shift_resp:
+      properties:
+        shiftAZ:
+          type: string
+        shift_perc:
+          type: string
+        shiftDateTime:
+          type: string
+    from_ba_resp:
+      properties:
+        AZ_Region:
+          type: string
+        abbrev:
+          type: string
+        id:
+          type: string
+        latitude:
+          type: string
+        longitude:
+          type: string
+        name:
+          type: string
+    grid_data_resp:
+      type: array
+      items:
+          type: object
+          properties:
+            point_time:
+              type: string
+            value:
+              type: number
+            frequency:
+              type: number
+            market:
+              type: string
+            ba:
+              type: string
+            datatype:
+              type: string
+            version:
+              type: string
+    index_data_resp:
+      properties:
+        freq:
+          type: string
+        ba:
+          type: string
+        percent:
+          type: string
+        moer:
+          type: string
+        point_time:
+          type: string
+    forecast_data_resp:
+      properties:
+        generated_at:
+          type: string
+        forecast:
+          type: array
+          items:
+            type: object
+            properties:
+              point_time:
+                type: string
+              value:
+                type: integer
+              version:
+                type: string
+              ba:
+                type: string
+    historical_data_resp: {}

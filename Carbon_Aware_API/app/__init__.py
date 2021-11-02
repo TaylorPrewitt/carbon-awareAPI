@@ -6,7 +6,8 @@ import json
 from flask_apscheduler import APScheduler
 
 SWAGGER_URL = '/swagger'
-API_URL = '/static/swagger5.yaml'
+#API_URL = '/static/swagger5.yaml'
+API_URL = 'static/swagger_docs.yaml'
 
 swaggerui_blueprint = get_swaggerui_blueprint(
     SWAGGER_URL,
