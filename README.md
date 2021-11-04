@@ -74,14 +74,14 @@ For more information, please see the full tool description: [Carbon Aware API De
 
 
 
-### Demand Shifting at Scale of Organizational Operations
+### Carbon Optimized Demand Shifting at Scale
 <sup>September 2021</sup>
 
 **Details:** *Geographically and temporally shifting compute instances at scale would reduce carbon by X%*
 
 **Results:** *Organizations can reduce their operational emissions by 48% by geographically shifting and 12% by temporally shifting ML computes.* 
 
-For more information and detailed results, please see the full case study: [Demand Shifting at Scale of Organizational Operations](https://github.com/TaylorPrewitt/carbon-awareAPI/tree/main/Documentation/Case%20Studies/Organizational_Shifting)
+For more information and detailed results, please see the full case study: [Carbon Optimized Demand Shifting at Scale](https://github.com/TaylorPrewitt/carbon-awareAPI/tree/main/Documentation/Case%20Studies/Organizational_Shifting)
 
 <br>
 
