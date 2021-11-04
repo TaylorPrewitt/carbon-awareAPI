@@ -1,5 +1,4 @@
-# Demand Shifting at Scale of Organizational Operations
-
+# Carbon Optimized Demand Shifting at Scale
 
 ## Introduction
 Investigates potential operational carbon footprint reductions for shifting ML computes geographically and temporally. 
