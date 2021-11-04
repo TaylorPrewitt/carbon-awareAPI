@@ -79,7 +79,7 @@ For more information, please see the full tool description: [Carbon Aware API De
 
 **Details:** *Geographically and temporally shifting compute instances at scale would reduce carbon by X%*
 
-**Results:** Organizations can reduce their operational emissions by 48% by geographically shifting and 12% by temporally shifting ML computes. 
+**Results:** *Organizations can reduce their operational emissions by 48% by geographically shifting and 12% by temporally shifting ML computes.* 
 
 For more information and detailed results, please see the full case study: [Demand Shifting at Scale of Organizational Operations](https://github.com/TaylorPrewitt/carbon-awareAPI/tree/main/Documentation/Case%20Studies/Organizational_Shifting)
 
@@ -90,7 +90,7 @@ For more information and detailed results, please see the full case study: [Dema
 
 **Details:** *Execute and progress cloud computes greater than 24 hours in duration during periods of low emission to reduce the carbon footprint by Y%*
 
-**Results:** *Computes greater than 24 hours saw 0% change with standard temporal shifting, but controlling progression based on regional carbon intesity thresholds reduced operational emissions by 10%*
+**Results:** *48-hour ML runs saw a mean of 0.5% change using standard temporal shifting, but controlling progression based on regional carbon intesity thresholds reduced operational emissions by 10%*
 
 For more information and detailed results, please see the full case study: [Carbon Segmented Cloud Computes](https://github.com/TaylorPrewitt/carbon-awareAPI/tree/main/Documentation/Case%20Studies/Carbon_trigger)
 
