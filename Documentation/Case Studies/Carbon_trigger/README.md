@@ -22,7 +22,7 @@ WattTime has the most coverage for Azure data centers globally compared to other
 
 ![image](https://user-images.githubusercontent.com/80305894/140415396-d8e5252c-90de-49ad-b82b-5d7f4ff3e774.png)
 
-The data centers considered in this case study are Azure data centers which are governed by a WattTime tracked balancing authority (9 data centers in the US and 24 data centers globally).  For a full list of the data centers considered in the case studies, see Appendix 6.
+The data centers considered in this case study are Azure data centers which are governed by a WattTime tracked balancing authority (9 data centers in the US and 24 data centers globally).  For a full list of the data centers considered in the case studies, see [Appendix 6](https://github.com/TaylorPrewitt/carbon-awareAPI/blob/main/Documentation/Appendices.md#Appendix%206).
 
 <br>
 
