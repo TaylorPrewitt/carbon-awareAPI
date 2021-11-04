@@ -8,7 +8,7 @@
   <li><a href="#Case Studies">Case Studies</a></li>
   <li><a href="https://github.com/TaylorPrewitt/carbon-awareAPI/tree/main/Carbon_Aware_API#api-architecture">API Architecture</a></li>
   <li><a href="https://github.com/TaylorPrewitt/carbon-awareAPI/blob/main/Documentation/Methods.md">Methodology</a></li>
-  <li><a href="#Tool Validation">Validation</a></li>
+  <li><a href="https://carbon-aware-api.herokuapp.com">Sample User Interface</a></li>
 </ol>
 
 
