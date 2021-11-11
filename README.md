@@ -16,13 +16,13 @@
 | Term | Definition   |
 | :------------- | :---------- | 
 | **Carbon Intensity** | Carbon emitted per energy unit. |
-| **Grid-Based Carbon Intensity**   | All entities who operate on a shared electrical grid, share a common emission rate. | 
-| **Marginal Carbon Intensity**   | The emissions intensity of the marginal power plant which will be turned on when additional load is added to the grid.|
+| **Grid-Based Carbon Intensity**   | All entities who operate on a shared electrical grid, share a common *carbon intensity*. | 
+| **Marginal Carbon Intensity**   | The *carbon intensity* of the marginal power plant that supplies power when additional load added to the grid.|
 | **Carbon Aware** | 	Adjusted behavior in response to the *carbon intensity* of consumption.|
 | **Carbon Delta**   | The difference in emissions between *carbon aware* and unaware actions. | 
-| **Carbon Counterfactual**   | The *carbon delta* had the carbon aware action been different.| 
+| **Carbon Counterfactual**   | The *carbon delta* had the *carbon aware* action been different.| 
 | **Demand Shifting**   | Selectively changing the time/location of a compute's execution, to a time/location where the energy demands are met by cleaner energy production, resulting in a lower *grid-based carbon intensity*.|
-| **Operational Emissions**   | Emissions explained by the energy consumption and location-based *carbon intensity* measurement during times of operation.| 
+| **Operational Emissions**   | Emissions explained by the energy consumption and *grid-based carbon intensity* measurement during times of operation.| 
 | **Embodied Emissions**   | Carbon emissions resultant of creating the hardware, structural systems, maintanence, etc. (e.g. constructing a GPU or datacenter).| 
 
 
